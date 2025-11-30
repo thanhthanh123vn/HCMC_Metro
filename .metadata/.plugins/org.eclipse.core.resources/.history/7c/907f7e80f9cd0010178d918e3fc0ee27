@@ -1,0 +1,54 @@
+package data;
+
+import java.util.LinkedList;
+import java.util.Set;
+import java.util.List;
+
+// Lớp Nhà ga
+class Station {
+    private String id;
+    private String name;
+
+    public Station(String id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+    // Getters & Setters...
+}
+
+// Lớp Đoạn đường (RoutePart)
+class RoutePart {
+    private Station beginStation;
+    private Station endStation;
+    private double distanceKm;
+
+    public RoutePart(Station begin, Station end, double distance) {
+        this.beginStation = begin;
+        this.endStation = end;
+        this.distanceKm = distance;
+    }
+}
+
+// Lớp Tuyến đường (Route)
+class Route {
+    private String id;
+    private String name;
+    // Trong ảnh dùng LinkedList
+    private LinkedList<RoutePart> routePartList = new LinkedList<>();
+
+    public Station getBeginStation() {
+        return routePartList.getFirst().getBeginStation(); // Giả lập logic
+    }
+
+    public Station getEndStation() {
+        return routePartList.getLast().getEndStation();
+    }
+
+    public void addRoutePart(RoutePart part) {
+        this.routePartList.add(part);
+    }
+    
+    public void removeRoutePart(RoutePart part) {
+        this.routePartList.remove(part);
+    }
+}
