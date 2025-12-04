@@ -46,6 +46,7 @@ public class MetroAppUI extends JFrame {
                 g2.fillRect(50, 100, 300, 200); 
                 g2.setColor(Color.WHITE);
                 g2.drawString("Background Image Here", 130, 200);
+               
             }
         };
         backgroundPanel.setBounds(0, 0, 400, 750);
