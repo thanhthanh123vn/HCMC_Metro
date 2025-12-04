@@ -1,0 +1,116 @@
+package view;
+
+import javax.swing.*;
+import java.awt.*;
+import java.net.URL;
+
+public class TicketPanel extends JPanel {
+
+    public TicketPanel() {
+        initComponents();
+    }
+
+    private void initComponents() {
+        this.setLayout(new BorderLayout(10, 10));
+        this.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        this.setBackground(Color.WHITE);
+
+        // --- 1. HEADER (Dùng train-ticket.png làm icon chính) ---
+        JPanel headerPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 0));
+        headerPanel.setOpaque(false);
+        
+        JLabel iconLabel = createIconLabel("train-ticket.png", 40, 40);
+        JLabel titleLabel = new JLabel("<html>METRO BẾN THÀNH<br>SUỐI TIÊN</html>");
+        titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 16));
+        titleLabel.setForeground(new Color(0, 51, 102));
+
+        headerPanel.add(iconLabel);
+        headerPanel.add(titleLabel);
+
+        // --- 2. INFO SECTION ---
+        JPanel infoPanel = new JPanel(new GridLayout(3, 2, 10, 15));
+        infoPanel.setOpaque(false);
+        infoPanel.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createTitledBorder("Chi tiết vé"),
+                BorderFactory.createEmptyBorder(10, 10, 10, 10)
+        ));
+
+        // Sử dụng map-marker.png cho Ga
+        infoPanel.add(createDetailItem("map-marker.png", "Ga đi:", "Bến Thành"));
+        infoPanel.add(createDetailItem("map-marker.png", "Ga đến:", "Tân Cảng"));
+        
+        // Sử dụng info.png cho thời gian (vì chưa có icon đồng hồ)
+        infoPanel.add(createDetailItem("info.png", "Thời gian:", "08:30 AM"));
+        
+        // Sử dụng info.png cho giá vé
+        infoPanel.add(createDetailItem("info.png", "Giá vé:", "15.000 VNĐ"));
+        
+        // Sử dụng user-male-circle.png cho hành khách
+        infoPanel.add(createDetailItem("user-male-circle.png", "Khách:", "Nguyễn Văn A"));
+        
+        // Sử dụng two-tickets.png cho loại vé
+        infoPanel.add(createDetailItem("two-tickets.png", "Loại vé:", "Một chiều"));
+
+        // --- 3. BUTTON SECTION ---
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        buttonPanel.setOpaque(false);
+        buttonPanel.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
+
+        JButton btnBack = new JButton("Quay lại");
+        btnBack.setPreferredSize(new Dimension(120, 40));
+        
+        JButton btnConfirm = new JButton("Xác nhận");
+        btnConfirm.setBackground(new Color(0, 153, 76));
+        btnConfirm.setForeground(Color.WHITE);
+        btnConfirm.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        btnConfirm.setPreferredSize(new Dimension(150, 40));
+        btnConfirm.setFocusPainted(false);
+
+        buttonPanel.add(btnBack);
+        buttonPanel.add(btnConfirm);
+
+        this.add(headerPanel, BorderLayout.NORTH);
+        this.add(infoPanel, BorderLayout.CENTER);
+        this.add(buttonPanel, BorderLayout.SOUTH);
+    }
+
+    // Helper tạo dòng thông tin có icon
+    private JPanel createDetailItem(String iconName, String label, String value) {
+        JPanel p = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        p.setOpaque(false);
+        
+        JLabel lblIcon = createIconLabel(iconName, 20, 20);
+        JLabel lblText = new JLabel("<html><b>" + label + "</b> " + value + "</html>");
+        lblText.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        
+        p.add(lblIcon);
+        p.add(lblText);
+        return p;
+    }
+
+    // Helper load icon từ src/img
+    private JLabel createIconLabel(String iconName, int w, int h) {
+        JLabel lbl = new JLabel();
+        try {
+            URL url = getClass().getResource("/img/" + iconName);
+            if (url != null) {
+                ImageIcon icon = new ImageIcon(url);
+                Image img = icon.getImage().getScaledInstance(w, h, Image.SCALE_SMOOTH);
+                lbl.setIcon(new ImageIcon(img));
+            }
+        } catch (Exception e) {
+            lbl.setText("•");
+        }
+        return lbl;
+    }
+
+    // Hàm main để test giao diện này
+    public static void main(String[] args) {
+        JFrame f = new JFrame("Ticket Detail");
+        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        f.setSize(350, 400);
+        f.setLocationRelativeTo(null);
+        f.setContentPane(new TicketPanel());
+        f.setVisible(true);
+    }
+}
