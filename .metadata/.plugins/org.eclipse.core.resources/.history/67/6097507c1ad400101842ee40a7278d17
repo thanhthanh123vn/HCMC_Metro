@@ -1,0 +1,12 @@
+@echo off
+:: Di chuyển vào thư mục dự án
+cd /d D:\DW\Staging
+
+:: Kích hoạt môi trường Python (nếu bạn dùng venv, nếu không thì bỏ qua dòng này)
+:: call venv\Scripts\activate
+
+:: Chạy script pipeline chính
+python pipeline_runner.py
+
+:: (Tùy chọn) Ghi log ra file để kiểm tra nếu lỗi
+:: python pipeline_runner.py >> run_log.txt 2>&1

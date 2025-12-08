@@ -1,0 +1,39 @@
+package data;
+
+public class Ticket {
+    private String id;
+    private ScheduleDetail scheduleDetail;
+    private Customer customer;
+    private String seatNumber;
+    private double price;
+
+    public String getInfo() {
+        return "Ticket info...";
+    }
+
+	public ScheduleDetail getScheduleDetail() {
+		return scheduleDetail;
+	}
+
+	public void setScheduleDetail(ScheduleDetail scheduleDetail) {
+		this.scheduleDetail = scheduleDetail;
+	}
+	
+
+	public String getSeatNumber() {
+		return seatNumber;
+	}
+
+	public void setSeatNumber(String seatNumber) {
+		this.seatNumber = seatNumber;
+	}
+
+	public double getPrice() {
+		return price;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
+	}
+
+}

@@ -9,7 +9,7 @@ import java.net.URL;
 public class MetroAppUI extends JFrame {
 
     // Màu sắc chủ đạo
-    private static final Color COLOR_PRIMARY = new Color(0, 90, 170); 
+    private static final Color COLOR_PRIMARY = new Color(0, 90, 170);
     private static final Color COLOR_BG_GRADIENT_1 = new Color(40, 120, 180);
     private static final Color COLOR_BG_GRADIENT_2 = new Color(240, 245, 250);
 
@@ -36,7 +36,7 @@ public class MetroAppUI extends JFrame {
                 g2.setPaint(gp);
                 g2.fillRect(0, 0, getWidth(), getHeight());
                 
-                // Vẽ trang trí đơn giản (hoặc bạn có thể load ảnh background.jpg ở đây)
+                // Vẽ trang trí đơn giản
                 g2.setColor(new Color(255, 255, 255, 50));
                 g2.fillOval(-50, -50, 300, 300);
             }
@@ -50,14 +50,30 @@ public class MetroAppUI extends JFrame {
         cardPanel.setLayout(null);
         cardPanel.setBounds(20, cardY, 345, 350);
 
-        // Thêm các Icon Menu (Load từ src/img)
-        // Hàng 1
-        cardPanel.add(createMenuItem("Mua vé", "train-ticket.png", 20, 50));
+        // --- Hàng 1 (Đã chỉnh sửa để bắt sự kiện click) ---
+        
+        // 1. Tạo nút Mua vé
+        JPanel btnMuaVe = createMenuItem("Mua vé", "train-ticket.png", 20, 50);
+        // Thêm sự kiện Click cho nút Mua vé
+        btnMuaVe.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                // Mở màn hình BuyTicketUI
+                BuyTicketUI buyTicketScreen = new BuyTicketUI();
+                buyTicketScreen.setVisible(true);
+                
+                // Đóng màn hình hiện tại (nếu muốn giữ màn hình cũ thì xóa dòng này đi)
+                dispose(); 
+            }
+        });
+        cardPanel.add(btnMuaVe);
+
+        // Các nút còn lại giữ nguyên
         cardPanel.add(createMenuItem("Vé của tôi", "two-tickets.png", 100, 50));
         cardPanel.add(createMenuItem("Đổi mã\nlấy vé", "qr-code.png", 180, 50));
         cardPanel.add(createMenuItem("Thông tin\nvé", "info.png", 260, 50));
 
-        // Hàng 2
+        // --- Hàng 2 ---
         cardPanel.add(createMenuItem("Hành trình", "map-marker.png", 20, 160));
         cardPanel.add(createMenuItem("Mua vé\nSuối Tiên", "theme-park.png", 100, 160));
         cardPanel.add(createMenuItem("Siêu thị\nonline", "shopping-cart.png", 180, 160));
@@ -125,15 +141,13 @@ public class MetroAppUI extends JFrame {
         
         // Tải ảnh từ thư mục src/img
         try {
-            // Lưu ý: Đường dẫn bắt đầu bằng dấu / là từ gốc src
             URL imgUrl = getClass().getResource("/img/" + iconName);
             if (imgUrl != null) {
                 ImageIcon originalIcon = new ImageIcon(imgUrl);
-                // Resize ảnh về kích thước 32x32
                 Image scaled = originalIcon.getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH);
                 iconLabel.setIcon(new ImageIcon(scaled));
             } else {
-                System.err.println("Không tìm thấy ảnh: " + iconName);
+                // System.err.println("Không tìm thấy ảnh: " + iconName); // Ẩn lỗi nếu không có ảnh
                 iconLabel.setText("?");
             }
         } catch (Exception e) {
@@ -146,7 +160,7 @@ public class MetroAppUI extends JFrame {
             protected void paintComponent(Graphics g) {
                 Graphics2D g2 = (Graphics2D) g;
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                g2.setColor(new Color(230, 245, 255)); // Màu nền icon nhạt
+                g2.setColor(new Color(230, 245, 255)); 
                 g2.fillOval(10, 5, 50, 50);
                 super.paintComponent(g);
             }
@@ -161,7 +175,7 @@ public class MetroAppUI extends JFrame {
         p.add(iconBg, BorderLayout.NORTH);
         p.add(textLabel, BorderLayout.CENTER);
         
-        // Hiệu ứng hover chuột đơn giản
+        // Hiệu ứng hover chuột
         p.addMouseListener(new MouseAdapter() {
             public void mouseEntered(MouseEvent e) { p.setCursor(new Cursor(Cursor.HAND_CURSOR)); }
         });

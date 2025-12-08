@@ -1,13 +1,18 @@
 package view;
 
 import javax.swing.*;
+
+import data.Ticket;
+
 import java.awt.*;
 import java.net.URL;
 import javax.imageio.ImageIO;
 
 public class TicketPanel extends JPanel {
+	private Ticket ticket;
 
-    public TicketPanel() {
+    public TicketPanel( ) {
+    
         initComponents();
     }
 

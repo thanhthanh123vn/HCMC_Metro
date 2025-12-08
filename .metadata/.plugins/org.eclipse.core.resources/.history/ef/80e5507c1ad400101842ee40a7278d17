@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>TH02 - Rắn Săn Mồi</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        .game-area {
+            margin: 20px auto;
+            border-collapse: collapse;
+        }
+
+        .game-area td {
+            width: 20px;
+            height: 20px;
+            border: 1px solid #ccc;
+        }
+
+        .score-board {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>TH02 - Rắn Săn Mồi</h1>
+
+    <div class="score-board">
+        <h2>Điểm: <span id="score">0</span></h2>
+    </div>
+    <table class="game-area" id="gameArea" border="1"></table>
+</div>
+<script>
+    const mapGame = [
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // hàng 0
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // hàng 1
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // hàng 2
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // hàng 3
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // hàng 4
+        [0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0], // hàng 5
+        [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0], // hàng 6
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // hàng 7
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // hàng 8
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // hàng 9
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // hàng 10
+        [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0], // hàng 11
+        [0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0], // hàng 12
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // hàng 13
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // hàng 14
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // hàng 15
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // hàng 16
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // hàng 17
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // hàng 18
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // hàng 19
+    ];
+    var direction = {up: 1, down: -1, left: -1, right: -1};
+    var game = {snakes: [], food: {}, score: 0, way: 0};
+    var gameArea = document.getElementById('gameArea');
+    var score = document.getElementById('score');
+
+
+    function createBoard() {
+        gameArea.innerHTML = "";
+        for (let i = 0; i < mapGame.length; i++) {
+
+            const row = document.createElement('tr');
+            for (let j = 0; j < mapGame[i].length; j++) {
+                const cell = document.createElement('td');
+                cell.className = i + "-" + j;
+                row.appendChild(cell);
+
+            }
+            gameArea.appendChild(row);
+        }
+    }
+
+    function renderMap() {
+        for (let i = 0; i < mapGame.length; i++) {
+            for (let j = 0; j < mapGame[i].length; j++) {
+                const cell = gameArea.rows[i].cells[j];
+                if (mapGame[i][j] === 1) {
+                    cell.style.backgroundColor = "green";
+                } else {
+                    cell.style.backgroundColor = "white";
+                }
+
+
+            }
+        }
+    }
+
+    function createSnake(x, y) {
+        game.snakes.push({x: x, y: y});
+        game.snakes.push({x: x + 1, y: y});
+        game.snakes.forEach((part) => {
+            const cell = gameArea.rows[part.x].cells[part.y];
+            cell.style.backgroundColor = "blue";
+
+        });
+
+    }
+
+    function moveSnake() {
+        const headSnake = game.snakes[0];
+        let newHead;
+        switch (game.way) {
+            case 0:
+                newHead = {x: headSnake.x - 1, y: headSnake.y};
+                if (headSnake.x - 1 < 0) {
+                    newHead = {x: 19, y: headSnake.y};
+                }
+
+                break;
+
+            case 1:
+                newHead = {x: headSnake.x, y: headSnake.y + 1};
+                if (headSnake.y + 1 > 19) {
+                    newHead = {x: headSnake.x, y: 0};
+                }
+
+                break;
+            case 2:
+                newHead = {x: headSnake.x + 1, y: headSnake.y};
+                if (headSnake.x + 1 > 19) {
+                    newHead = {x: 0, y: headSnake.y};
+                }
+                break;
+            case 3:
+                newHead = {x: headSnake.x, y: headSnake.y - 1};
+                if (headSnake.y - 1 < 0) {
+                    newHead = {x: newHead.x, y: 19};
+
+
+                }
+                break;
+        }
+        game.snakes.unshift(newHead);
+        const tail = game.snakes.pop();
+        const tailCell = gameArea.rows[tail.x].cells[tail.y];
+
+        tailCell.style.backgroundColor = "white";
+        const headCell = gameArea.rows[newHead.x].cells[newHead.y];
+        headCell.style.backgroundColor = "blue";
+
+    }
+
+    function updateSnake(){
+        game.snakes.forEach((part) => {
+            const cell = gameArea.rows[part.x].cells[part.y];
+            cell.style.backgroundColor = "blue";
+        });
+    }
+
+    function changeDirection(event) {
+        const keyCode = event.keyCode;
+        console.log(keyCode);
+        switch (keyCode) {
+            case 37:
+                game.way = 3;
+                break;
+            case 38:
+                game.way = 0;
+                break;
+            case 39:
+                game.way = 1;
+                break;
+            case 40:
+                game.way = 2;
+                break;
+        }
+
+
+    }
+
+    function placeFood() {
+        let x, y;
+        do {
+            x = Math.floor(Math.random() * 20);
+            y = Math.floor(Math.random() * 20);
+        } while (
+            mapGame[x][y] !== 0 ||
+            game.snakes.some((snake) => snake.x === x && snake.y === y)
+            || mapGame[x][y] !== 1 );
+        game.food = {x: x, y: y};
+        const cell = gameArea.rows[x].cells[y];
+        cell.style.backgroundColor = "red";
+    }
+    function checkCollision() {
+        const head = game.snakes[0];
+        if (
+            mapGame[head.x][head.y] === 1 ||
+            game.snakes
+                .slice(1)
+                .some((part) => part.x === head.x && part.y === head.y)
+        ) {
+            alert("Game Over! Your score: " + game.score);
+            reSetGame();
+        }
+    }
+    function  checkCollisionFood(){
+        const head = game.snakes[0];
+        const headFood = game.food;
+        if(head.x === headFood.x && head.y === headFood.y) {
+           game.snakes.unshift(headFood);
+            updateSnake();
+            updateScore(5);
+            placeFood();
+            const headCell = gameArea.rows[headFood.x].cells[headFood.y];
+            headCell.style.backgroundColor = "blue";
+            return true;
+
+
+        }
+
+
+    }
+function updateScore(points){
+    game.score += points;
+    score.textContent = game.score;
+
+}
+    function reSetGame() {
+        game.snakes = [];
+        game.food = {};
+        game.score = 0;
+        game.way = 0;
+        score.textContent = game.score;
+        gameArea.innerHTML = "";
+        createBoard();
+        renderMap();
+        placeFood();
+        createSnake(18, 17);
+    }
+
+
+    function startGame() {
+        createBoard();
+        renderMap();
+        placeFood();
+        createSnake(18, 17);
+        document.addEventListener("keydown", changeDirection);
+        setInterval(() => {
+            updateSnake();
+            moveSnake();
+            checkCollision();
+            checkCollisionFood();
+        },500);
+
+    }
+
+    window.onload = startGame;
+</script>
+
+
+</body>
+</html>

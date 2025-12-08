@@ -1,0 +1,25 @@
+package data;
+
+public class Ticket {
+    private String id;
+    private ScheduleDetail scheduleDetail;
+    private Customer customer;
+    private String seatNumber;
+    private double price;
+
+    public String getInfo() {
+        return "Ticket info...";
+    }
+
+    public void assignCustomer(Customer c) {
+        this.customer = c;
+    }
+
+    public double calculatePrice() {
+        return this.price;
+    }
+
+    public boolean isValid() {
+        return true;
+    }
+}

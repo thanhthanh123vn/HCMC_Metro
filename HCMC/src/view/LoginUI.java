@@ -2,6 +2,8 @@ package view;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.net.URL;
@@ -101,12 +103,30 @@ public class LoginUI extends JFrame {
         btnLogin.setFocusPainted(false);
         btnLogin.setBorderPainted(false);
         
-        // Sự kiện click Đăng nhập
-        btnLogin.addActionListener(e -> {
-            JOptionPane.showMessageDialog(this, "Đăng nhập thành công!");
-            new MetroAppUI().setVisible(true); // Chuyển sang màn hình chính
-            this.dispose();
+        btnLogin.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                String username = txtUser.getText();
+                String password = String.valueOf(txtPass.getPassword());
+
+                if (username.equals("tiến") && password.equals("2345678")) {
+                    JOptionPane.showMessageDialog(null, "Đăng nhập thành công!");
+                    new MetroAppUI().setVisible(true);
+
+                    JFrame current = (JFrame) SwingUtilities.getWindowAncestor(btnLogin);
+                    current.dispose();
+                } else {
+                    JOptionPane.showMessageDialog(null, 
+                        "Sai tài khoản hoặc mật khẩu!", 
+                        "Lỗi", 
+                        JOptionPane.ERROR_MESSAGE
+                    );
+                }
+            }
         });
+
+
         cardPanel.add(btnLogin);
 
         // Link Register
@@ -120,6 +140,7 @@ public class LoginUI extends JFrame {
         lblRegister.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+            	
                 new RegisterUI().setVisible(true);
                 dispose();
             }

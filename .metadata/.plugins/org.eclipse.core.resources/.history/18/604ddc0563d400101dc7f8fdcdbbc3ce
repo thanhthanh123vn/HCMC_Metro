@@ -1,0 +1,120 @@
+package view;
+
+import javax.swing.*;
+
+import data.Ticket;
+
+import java.awt.*;
+import java.net.URL;
+import javax.imageio.ImageIO;
+
+public class TicketPanel extends JPanel {
+	private Ticket ticket;
+
+    public TicketPanel( ) {
+    
+        initComponents();
+    }
+
+    private void initComponents() {
+        // Cấu hình Layout chính cho Panel này
+        this.setLayout(new BorderLayout(10, 10));
+        this.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        this.setBackground(Color.WHITE);
+
+        // --- 1. HEADER SECTION (Tiêu đề & Icon Tàu) ---
+        JPanel headerPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        headerPanel.setOpaque(false);
+        
+        // Load Icon từ URL tuyệt đối
+        JLabel iconLabel = new JLabel();
+        try {
+            // Ví dụ icon tàu điện từ Flaticon (URL trực tiếp)
+            String iconUrl = "https://cdn-icons-png.flaticon.com/512/235/235889.png"; 
+            URL url = new URL(iconUrl);
+            Image image = ImageIO.read(url);
+            // Resize icon cho vừa vặn
+            Image scaledImage = image.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+            iconLabel.setIcon(new ImageIcon(scaledImage));
+        } catch (Exception e) {
+            e.printStackTrace();
+            iconLabel.setText("[Icon Tàu]"); // Fallback nếu lỗi mạng
+        }
+
+        JLabel titleLabel = new JLabel("METRO BẾN THÀNH - SUỐI TIÊN");
+        titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        titleLabel.setForeground(new Color(0, 51, 102)); // Màu xanh đậm
+
+        headerPanel.add(iconLabel);
+        headerPanel.add(titleLabel);
+
+        // --- 2. INFO SECTION (Thông tin chi tiết) ---
+        JPanel infoPanel = new JPanel(new GridLayout(3, 2, 10, 10));
+        infoPanel.setOpaque(false);
+        infoPanel.setBorder(BorderFactory.createTitledBorder("Thông tin chuyến đi"));
+
+        // Helper để tạo các dòng thông tin có icon nhỏ
+        infoPanel.add(createDetailItem("https://cdn-icons-png.flaticon.com/512/664/664468.png", "Ga đi:", "Bến Thành"));
+        infoPanel.add(createDetailItem("https://cdn-icons-png.flaticon.com/512/664/664468.png", "Ga đến:", "Tân Cảng"));
+        infoPanel.add(createDetailItem("https://cdn-icons-png.flaticon.com/512/833/833593.png", "Thời gian:", "08:30 AM"));
+        infoPanel.add(createDetailItem("https://cdn-icons-png.flaticon.com/512/2454/2454282.png", "Giá vé:", "15.000 VNĐ"));
+        infoPanel.add(createDetailItem("https://cdn-icons-png.flaticon.com/512/1077/1077114.png", "Hành khách:", "Nguyễn Văn Thạnh"));
+        infoPanel.add(createDetailItem("https://cdn-icons-png.flaticon.com/512/126/126473.png", "Loại vé:", "Phổ thông"));
+
+        // --- 3. BUTTON SECTION (Nút chức năng) ---
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        buttonPanel.setOpaque(false);
+
+        JButton btnBook = new JButton("Đặt vé ngay");
+        btnBook.setBackground(new Color(0, 153, 76));
+        btnBook.setForeground(Color.WHITE);
+        btnBook.setFocusPainted(false);
+        btnBook.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        
+        // Thêm icon cho nút button từ mạng
+        try {
+            URL btnUrl = new URL("https://cdn-icons-png.flaticon.com/512/1001/1001259.png"); // Icon check
+            Image img = ImageIO.read(btnUrl).getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+            btnBook.setIcon(new ImageIcon(img));
+        } catch (Exception e) {}
+
+        buttonPanel.add(btnBook);
+
+        // Thêm các phần vào Panel chính
+        this.add(headerPanel, BorderLayout.NORTH);
+        this.add(infoPanel, BorderLayout.CENTER);
+        this.add(buttonPanel, BorderLayout.SOUTH);
+    }
+
+    // Hàm phụ trợ để tạo từng mục thông tin kèm icon nhỏ
+    private JPanel createDetailItem(String iconUrl, String label, String value) {
+        JPanel p = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        p.setOpaque(false);
+        
+        JLabel lblIcon = new JLabel();
+        try {
+            URL url = new URL(iconUrl);
+            Image img = ImageIO.read(url).getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+            lblIcon.setIcon(new ImageIcon(img));
+        } catch (Exception e) {
+            lblIcon.setText("•");
+        }
+        
+        JLabel lblText = new JLabel("<html><b>" + label + "</b> " + value + "</html>");
+        lblText.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        
+        p.add(lblIcon);
+        p.add(lblText);
+        return p;
+    }
+
+    // Hàm Main để test riêng giao diện này
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("Test Giao Diện Metro");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setContentPane(new TicketPanel();
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+    }
+}
