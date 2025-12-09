@@ -1,16 +1,15 @@
 package view;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-
 import data.Ticket;
+import data.OrderManager; // Nhớ import logic nếu đã tạo
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.geom.RoundRectangle2D;
 import java.net.URL;
 import java.text.DecimalFormat;
-
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 
@@ -24,15 +23,18 @@ public class OrderScreenUI extends JFrame {
     private static final Font FONT_BOLD = new Font("Segoe UI", Font.BOLD, 14);
     private static final Font FONT_PLAIN = new Font("Segoe UI", Font.PLAIN, 14);
     private static final Font FONT_HEADER = new Font("Segoe UI", Font.BOLD, 18);
+    
     public Ticket ticket;
 
-    // --- LINK ICON WEB (Bạn có thể thay link ảnh khác vào đây) ---
+    // --- LINK ICON WEB ---
     private static final String ICON_BACK_URL = "https://img.icons8.com/ios-glyphs/30/000000/long-arrow-left.png";
     private static final String ICON_CARD_URL = "https://img.icons8.com/ios/50/14143C/bank-cards--v1.png";
     private static final String ICON_CHEVRON_URL = "https://img.icons8.com/ios-glyphs/30/808080/chevron-right.png";
-    private String category ;
-    private double price ;
-    int priceInt;
+    
+    private String category;
+    private double price;
+    private int priceInt;
+    
     public OrderScreenUI(Ticket ticket) {
         setTitle("Thông tin đơn hàng");
         setSize(420, 750);
@@ -40,17 +42,18 @@ public class OrderScreenUI extends JFrame {
         setLocationRelativeTo(null);
         getContentPane().setBackground(BG_COLOR);
         setLayout(new BorderLayout());
+        setResizable(false); // Cố định kích thước để tránh vỡ layout
+        
         this.ticket = ticket;
-        category = ticket.getSeatNumber();
+        // Xử lý null safety cho category
+        category = (ticket.getSeatNumber() != null) ? ticket.getSeatNumber() : "Chưa chọn";
         price = ticket.getPrice();
         priceInt = (int) price;  
-
-        
 
         // 1. HEADER
         add(createHeader(), BorderLayout.NORTH);
 
-        // 2. CONTENT (Có scroll nhưng ẩn thanh cuộn)
+        // 2. CONTENT
         JPanel contentPanel = new JPanel();
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
         contentPanel.setBackground(BG_COLOR);
@@ -66,7 +69,7 @@ public class OrderScreenUI extends JFrame {
         contentPanel.add(createPaymentDetailsPanel());
 
         contentPanel.add(Box.createVerticalStrut(20));
-        contentPanel.add(createSectionTitle("Thông tin "+category));
+        contentPanel.add(createSectionTitle("Thông tin vé")); // Rút gọn title để tránh tràn
         contentPanel.add(Box.createVerticalStrut(5));
         contentPanel.add(createTicketInfoPanel());
 
@@ -75,32 +78,17 @@ public class OrderScreenUI extends JFrame {
         scrollPane.setBorder(null);
         scrollPane.getVerticalScrollBar().setUnitIncrement(16);
         
-        // Mẹo: Đặt kích thước thanh cuộn về 0 để ẩn nó đi nhưng vẫn scroll được
+        // Ẩn thanh cuộn dọc nhưng vẫn scroll được
         scrollPane.getVerticalScrollBar().setPreferredSize(new Dimension(0, 0));
-        scrollPane.getHorizontalScrollBar().setPreferredSize(new Dimension(0, 0));
+        
+        // --- QUAN TRỌNG: Tắt thanh cuộn ngang để ép nội dung xuống dòng ---
+        scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         
         add(scrollPane, BorderLayout.CENTER);
 
         // 3. FOOTER
         add(createFooter(), BorderLayout.SOUTH);
         setVisible(true);
-
-    }
-
-    // --- HÀM TẢI ICON TỪ WEB ---
-    private ImageIcon loadIconFromWeb(String urlString, int width, int height) {
-        try {
-            URL url = new URL(urlString);
-            BufferedImage image = ImageIO.read(url);
-            if (image != null) {
-                Image scaledImage = image.getScaledInstance(width, height, Image.SCALE_SMOOTH);
-                return new ImageIcon(scaledImage);
-            }
-        } catch (Exception e) {
-            System.err.println("Không tải được ảnh: " + urlString);
-            // Trả về null hoặc icon rỗng nếu lỗi
-        }
-        return null;
     }
 
     // --- CÁC COMPONENT ---
@@ -110,33 +98,26 @@ public class OrderScreenUI extends JFrame {
         header.setBackground(Color.WHITE);
         header.setBorder(new EmptyBorder(15, 15, 15, 15));
 
-        // Thay Text bằng Icon Web
         JLabel lblBack = new JLabel();
         lblBack.setIcon(loadIconFromWeb(ICON_BACK_URL, 24, 24));
         
         lblBack.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-             
                 Window current = SwingUtilities.getWindowAncestor(lblBack);
                 if (current != null) current.dispose();
-
-               
-                new BuyTicketUI();
+                new BuyTicketUI(); // Quay lại màn hình mua vé
             }
-
             @Override
-            public void mouseEntered(java.awt.event.MouseEvent e) {
+            public void mouseEntered(MouseEvent e) {
                 lblBack.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             }
         });
-
         
         JLabel lblTitle = new JLabel("Thông tin đơn hàng", SwingConstants.CENTER);
         lblTitle.setFont(FONT_HEADER);
         lblTitle.setForeground(new Color(20, 0, 80));
 
-        // Dummy để cân giữa
         JLabel lblDummy = new JLabel(); 
         lblDummy.setPreferredSize(new Dimension(24, 24));
 
@@ -151,15 +132,14 @@ public class OrderScreenUI extends JFrame {
         JPanel panel = new RoundedPanel(15, Color.WHITE);
         panel.setLayout(new BorderLayout());
         panel.setBorder(new EmptyBorder(15, 15, 15, 15));
+        // Fix width tràn: set Max Width là MAX_VALUE, chiều cao cố định 70
         panel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 70));
 
-        // Icon thẻ ngân hàng từ web
         JLabel lblIcon = new JLabel("  Phương thức thanh toán");
         lblIcon.setIcon(loadIconFromWeb(ICON_CARD_URL, 24, 24));
         lblIcon.setFont(FONT_PLAIN);
         lblIcon.setForeground(TEXT_DARK);
 
-        // Icon mũi tên nhỏ bên phải
         JLabel lblArrow = new JLabel();
         lblArrow.setIcon(loadIconFromWeb(ICON_CHEVRON_URL, 16, 16));
 
@@ -181,14 +161,25 @@ public class OrderScreenUI extends JFrame {
         JPanel panel = new RoundedPanel(15, new Color(248, 249, 253));
         panel.setLayout(new GridBagLayout());
         panel.setBorder(new EmptyBorder(15, 15, 15, 15));
+        
+        // --- QUAN TRỌNG: Fix width tràn ---
+        // Chiều rộng max, chiều cao ước lượng (200) để không bị co lại quá nhỏ
+        panel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 220)); 
+
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(5, 0, 5, 0);
 
-        addDetailRow(panel, gbc, 0, "Sản phẩm:", category, false);
+        // Cắt chuỗi category nếu quá dài để tránh vỡ layout
+        String displayCat = category;
+        if (displayCat.length() > 25) {
+            displayCat = displayCat.substring(0, 22) + "...";
+        }
+
+        addDetailRow(panel, gbc, 0, "Sản phẩm:", displayCat, false);
         addDetailRow(panel, gbc, 1, "Đơn giá:", priceInt+"đ", false);
         addDetailRow(panel, gbc, 2, "Số lượng:", "1", false);
-        addDetailRow(panel, gbc, 3, "Thành tiền:",priceInt+"đ", true);
+        addDetailRow(panel, gbc, 3, "Thành tiền:", priceInt+"đ", true);
 
         JSeparator sep = new JSeparator();
         sep.setForeground(Color.LIGHT_GRAY);
@@ -206,12 +197,18 @@ public class OrderScreenUI extends JFrame {
         JPanel panel = new RoundedPanel(15, new Color(248, 249, 253));
         panel.setLayout(new GridBagLayout());
         panel.setBorder(new EmptyBorder(15, 15, 15, 15));
+        
+        // --- QUAN TRỌNG: Fix width tràn ---
+        panel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 150));
+
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(8, 0, 8, 0);
 
-        addDetailRow(panel, gbc, 0, "Loại vé:", category, false);
-        addDetailRow(panel, gbc, 1, "HSD:", "24h kể từ thời điểm kích hoạt", false);
+        // Xử lý hiển thị tên loại vé (có thể dùng HTML để wrap)
+        String htmlCategory = "<html><body style='width: 180px'>" + category + "</body></html>";
+        addDetailRow(panel, gbc, 0, "Loại vé:", htmlCategory, false);
+        addDetailRow(panel, gbc, 1, "HSD:", "24h kể từ khi kích hoạt", false);
 
         gbc.gridy = 2; gbc.gridx = 0; gbc.weightx = 0.3; gbc.anchor = GridBagConstraints.NORTHWEST;
         JLabel lblTitle = new JLabel("Lưu ý:");
@@ -227,6 +224,8 @@ public class OrderScreenUI extends JFrame {
         txtNote.setWrapStyleWord(true);
         txtNote.setOpaque(false);
         txtNote.setEditable(false);
+        // Set size nhỏ để ép text area phải wrap, GridBagLayout sẽ expand nó ra sau
+        txtNote.setSize(new Dimension(100, 1)); 
         panel.add(txtNote, gbc);
 
         return panel;
@@ -234,16 +233,21 @@ public class OrderScreenUI extends JFrame {
 
     private void addDetailRow(JPanel p, GridBagConstraints gbc, int row, String key, String value, boolean isBold) {
         gbc.gridy = row;
-        gbc.gridx = 0; gbc.weightx = 0.4; gbc.anchor = GridBagConstraints.WEST;
+        gbc.gridx = 0; gbc.weightx = 0.35; // Giảm weight bên trái chút
+        gbc.anchor = GridBagConstraints.WEST;
         JLabel lblKey = new JLabel(key);
         lblKey.setFont(FONT_BOLD);
         lblKey.setForeground(TEXT_DARK);
         p.add(lblKey, gbc);
 
-        gbc.gridx = 1; gbc.weightx = 0.6; gbc.anchor = GridBagConstraints.EAST;
+        gbc.gridx = 1; gbc.weightx = 0.65; 
+        gbc.anchor = GridBagConstraints.EAST;
         JLabel lblValue = new JLabel(value);
         lblValue.setFont(isBold ? FONT_BOLD : FONT_PLAIN);
         lblValue.setForeground(TEXT_DARK);
+        
+        // Căn lề phải cho giá trị
+        lblValue.setHorizontalAlignment(SwingConstants.RIGHT); 
         p.add(lblValue, gbc);
     }
 
@@ -253,6 +257,7 @@ public class OrderScreenUI extends JFrame {
         footer.setBackground(Color.WHITE);
         footer.setBorder(new EmptyBorder(10, 15, 20, 15));
 
+        // Khai báo label điều khoản (Đã thêm lại)
         JLabel lblTerm = new JLabel("<html>Bằng việc bấm thanh toán, bạn đồng ý với <font color='#0099ff'><u>điều khoản</u></font> của Metro</html>");
         lblTerm.setFont(new Font("Segoe UI", Font.PLAIN, 12));
         lblTerm.setForeground(Color.GRAY);
@@ -260,31 +265,44 @@ public class OrderScreenUI extends JFrame {
 
         JPanel btnContainer = new RoundedPanel(25, BTN_COLOR);
         btnContainer.setLayout(new BorderLayout());
-        double price = ticket.getPrice();
         String formatted = formatMoney(price);
 
         JLabel lblBtnText = new JLabel("Thanh toán: " + formatted, SwingConstants.CENTER);
         lblBtnText.setForeground(Color.WHITE);
         lblBtnText.setFont(new Font("Segoe UI", Font.BOLD, 16));
         btnContainer.add(lblBtnText, BorderLayout.CENTER);
+        
+        // Fix chiều cao nút
         btnContainer.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
+        btnContainer.setPreferredSize(new Dimension(300, 50));
         btnContainer.setCursor(new Cursor(Cursor.HAND_CURSOR));
         
         btnContainer.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+                // Xử lý thanh toán
+                OrderManager manager = OrderManager.getInstance();
+                boolean success = manager.processPayment(ticket, "Credit Card");
 
-                double price = ticket.getPrice(); // Lấy giá từ ticket
-                String formatted = formatMoney(price);  // Định dạng tiền tệ
-
-                JOptionPane.showMessageDialog(null,
-                        "Bạn đã thanh toán số tiền: " + formatted,
-                        "Thanh toán",
-                        JOptionPane.INFORMATION_MESSAGE
-                );
+                if (success) {
+                    JOptionPane.showMessageDialog(OrderScreenUI.this,
+                            "Thanh toán thành công!\nVé đã được gửi vào ví.",
+                            "Thành công",
+                            JOptionPane.INFORMATION_MESSAGE
+                    );
+                } else {
+                     JOptionPane.showMessageDialog(OrderScreenUI.this,
+                            "Thanh toán thất bại.",
+                            "Lỗi",
+                            JOptionPane.ERROR_MESSAGE
+                    );
+                }
+            }
+             @Override
+            public void mouseExited(MouseEvent e) {
+                 btnContainer.setBackground(BTN_COLOR); 
             }
         });
-
 
         footer.add(lblTerm);
         footer.add(Box.createVerticalStrut(10));
@@ -292,17 +310,28 @@ public class OrderScreenUI extends JFrame {
 
         return footer;
     }
+
     public String formatMoney(double amount) {
         DecimalFormat df = new DecimalFormat("#,###");
         return df.format(amount) + "đ";
     }
 
+    private ImageIcon loadIconFromWeb(String urlString, int width, int height) {
+        try {
+            URL url = new URL(urlString);
+            BufferedImage image = ImageIO.read(url);
+            if (image != null) {
+                Image scaledImage = image.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+                return new ImageIcon(scaledImage);
+            }
+        } catch (Exception e) {}
+        return null;
+    }
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new OrderScreenUI(new Ticket()).setVisible(true));
     }
 
-    // Class hỗ trợ vẽ bo tròn
     static class RoundedPanel extends JPanel {
         private int cornerRadius;
         private Color backgroundColor;

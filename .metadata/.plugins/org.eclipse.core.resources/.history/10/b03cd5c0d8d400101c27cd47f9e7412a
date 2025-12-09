@@ -1,0 +1,82 @@
+package data;
+
+package logic; // Hoặc package data tùy cấu trúc của bạn
+
+import data.Order;
+import data.Ticket;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+public class OrderManager {
+    // Áp dụng Singleton Pattern để chỉ có 1 instance quản lý toàn bộ đơn hàng trong phiên làm việc
+    private static OrderManager instance;
+    private List<Order> orderHistory;
+
+    private OrderManager() {
+        orderHistory = new ArrayList<>();
+    }
+
+    public static OrderManager getInstance() {
+        if (instance == null) {
+            instance = new OrderManager();
+        }
+        return instance;
+    }
+
+    /**
+     * Xử lý logic thanh toán cho một vé cụ thể
+     * @param ticket: Vé đang được mua
+     * @param paymentMethod: Phương thức thanh toán (thẻ, ví, tiền mặt...)
+     * @return boolean: true nếu thanh toán thành công
+     */
+    public boolean processPayment(Ticket ticket, String paymentMethod) {
+        // 1. Kiểm tra tính hợp lệ của vé (Ví dụ: giá tiền phải > 0)
+        if (ticket == null || ticket.getPrice() <= 0) {
+            System.out.println("Lỗi: Vé không hợp lệ hoặc giá trị bằng 0.");
+            return false;
+        }
+
+        // 2. Giả lập gọi API thanh toán (Banking/Momo/...)
+        // Ở đây ta giả định luôn thành công nếu giá tiền hợp lệ
+        boolean bankingSuccess = mockBankingApiCall(ticket.getPrice());
+
+        if (bankingSuccess) {
+            // 3. Nếu thanh toán thành công, tạo Order mới và lưu lại
+            createAndSaveOrder(ticket);
+            return true;
+        }
+
+        return false;
+    }
+
+    // Hàm private để tạo Order từ Ticket
+    private void createAndSaveOrder(Ticket ticket) {
+        Order newOrder = new Order();
+        // Giả sử class Order của bạn có setter cho Date, nếu chưa có hãy thêm vào
+        // newOrder.setOrderDate(new Date()); 
+        
+        newOrder.assignTicket(ticket); //
+        
+        // Lưu vào lịch sử (giả lập Database)
+        orderHistory.add(newOrder);
+        
+        System.out.println("Đã tạo đơn hàng mới. Tổng số đơn hàng hiện tại: " + orderHistory.size());
+    }
+
+    // Giả lập kết nối ngân hàng
+    private boolean mockBankingApiCall(double amount) {
+        System.out.println("Đang kết nối cổng thanh toán... Trừ số tiền: " + amount);
+        try {
+            Thread.sleep(1000); // Giả lập độ trễ mạng
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return true; // Luôn trả về thành công cho demo
+    }
+
+    // Lấy danh sách lịch sử đơn hàng
+    public List<Order> getOrderHistory() {
+        return orderHistory;
+    }
+}

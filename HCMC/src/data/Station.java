@@ -5,7 +5,7 @@ import java.util.Set;
 import java.util.List;
 
 // Lớp Nhà ga
-class Station {
+public class Station {
     private String id;
     private String name;
 

@@ -1,0 +1,47 @@
+package data;
+
+package logic;
+
+import java.util.Hashtable;
+
+public class FareCalculator {
+    // Hashtable lưu bảng giá: Key là Mã khoảng cách (Zone), Value là Giá tiền
+    private static Hashtable<Integer, Double> priceTable = new Hashtable<>();
+
+    // Block static để khởi tạo bảng giá (Chạy 1 lần khi chương trình bắt đầu)
+    static {
+        // Giả sử:
+        // Key 1: Dưới 5km
+        // Key 2: Từ 5km - 10km
+        // Key 3: Từ 10km - 20km
+        // Key 4: Trên 20km
+        
+        priceTable.put(1, 12000.0); // 12k
+        priceTable.put(2, 16000.0); // 16k
+        priceTable.put(3, 20000.0); // 20k
+        priceTable.put(4, 24000.0); // 24k
+    }
+
+    /**
+     * Hàm tính giá vé dựa trên khoảng cách
+     * @param distanceKm: Số km di chuyển
+     * @return double: Giá tiền
+     */
+    public static double calculateFare(double distanceKm) {
+        int zone = getZoneFromDistance(distanceKm);
+        
+        if (priceTable.containsKey(zone)) {
+            return priceTable.get(zone);
+        } else {
+            return 10000.0; // Giá mặc định nếu lỗi
+        }
+    }
+
+    // Hàm phụ trợ để quy đổi km sang Zone (Mức giá)
+    private static int getZoneFromDistance(double km) {
+        if (km <= 5) return 1;
+        if (km <= 10) return 2;
+        if (km <= 20) return 3;
+        return 4; // Trên 20km
+    }
+}

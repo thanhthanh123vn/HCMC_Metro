@@ -1,0 +1,22 @@
+package data;
+
+public class FareCalculator {
+
+    /**
+     * Tính giá vé theo số trạm Metro.
+     * @param fromIndex: số thứ tự ga đi
+     * @param toIndex: số thứ tự ga đến
+     * @return giá tiền (double)
+     */
+    public static double calculateFare(int fromIndex, int toIndex) {
+        int distance = Math.abs(fromIndex - toIndex); // số trạm di chuyển
+
+        if (distance == 0) return 0; // cùng 1 ga → không tính tiền
+
+        // Quy tắc Metro HCM (giả lập dựa trên biểu giá phổ biến)
+        if (distance <= 3) return 7000;     // 1–3 ga
+        if (distance <= 6) return 12000;    // 4–6 ga
+        if (distance <= 10) return 17000;   // 7–10 ga
+        return 22000;                       // Trên 10 ga
+    }
+}

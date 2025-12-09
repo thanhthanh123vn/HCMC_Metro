@@ -1,0 +1,85 @@
+package data;
+
+
+import java.util.ArrayList;
+import java.util.List;
+import data.Station; 
+
+public class MetroService {
+    private List<Station> stations;
+    private List<Double> distances; // Lưu khoảng cách giữa các trạm liền kề
+
+    public MetroService() {
+        stations = new ArrayList<>();
+        distances = new ArrayList<>();
+        initializeData();
+    }
+
+    private void initializeData() {
+       
+        String[] stationNames = {
+            "Bến Thành", "Nhà hát TP", "Ba Son", "Tân Cảng", "Thảo Điền",
+            "An Phú", "Rạch Chiếc", "Phước Long", "Bình Thái",
+            "Thủ Đức", "Khu CNC", "ĐHQG", "Suối Tiên"
+        };
+
+     
+        double[] positions = {
+            0.0, 0.6, 2.3, 5.5, 7.2, 8.8, 
+            10.5, 12.0, 13.5, 15.0, 16.8, 18.5, 19.7
+        };
+
+    
+        for (int i = 0; i < stationNames.length; i++) {
+          
+            String id = "S" + (i < 9 ? "0" : "") + (i + 1);
+            stations.add(new Station(id, stationNames[i]));
+            
+          
+            if (i > 0) {
+                double dist = positions[i] - positions[i-1];
+                distances.add(dist); 
+                // Lưu ý: Để đúng chuẩn Route/RoutePart như class bạn gửi, 
+                // ta sẽ cần logic phức tạp hơn để build Route object. 
+                // Ở đây mình đơn giản hóa để UI dễ dùng.
+            }
+        }
+    }
+
+    public List<Station> getStations() {
+        return stations;
+    }
+
+    public String[] getStationNames() {
+        String[] names = new String[stations.size()];
+        for (int i = 0; i < stations.size(); i++) {
+            names[i] = stations.get(i).getName();
+        }
+        return names;
+    }
+
+    /**
+     * Tính khoảng cách giữa 2 trạm dựa trên danh sách đối tượng
+     */
+    public double calculateDistance(int indexFrom, int indexTo) {
+        if (indexFrom == indexTo) return 0.0;
+
+        int start = Math.min(indexFrom, indexTo);
+        int end = Math.max(indexFrom, indexTo);
+
+        double totalDist = 0.0;
+        // Cộng dồn khoảng cách các đoạn (tương đương duyệt RoutePart)
+        for (int i = start; i < end; i++) {
+            totalDist += distances.get(i);
+        }
+        return totalDist;
+    }
+    
+    // Lấy Station object theo index
+    public Station getStationAt(int index) {
+        if (index >= 0 && index < stations.size()) {
+            return stations.get(index);
+        }
+        return null;
+    }
+}
