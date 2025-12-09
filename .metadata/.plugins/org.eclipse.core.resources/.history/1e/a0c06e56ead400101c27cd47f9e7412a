@@ -1,0 +1,22 @@
+package view;
+
+
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+
+public class App {
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            try {
+               
+                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            // Khởi tạo và hiển thị màn hình Đăng nhập
+            // Lưu ý: Đảm bảo LoginUI có constructor public LoginUI()
+            new LoginUI().setVisible(true);
+        });
+    }
+}

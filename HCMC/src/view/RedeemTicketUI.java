@@ -5,11 +5,13 @@ package view;
 import data.OrderManager;
 import data.Ticket;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.net.URL;
 
 public class RedeemTicketUI extends JFrame {
@@ -39,7 +41,7 @@ public class RedeemTicketUI extends JFrame {
         contentPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
 
         // -- Hình ảnh minh họa --
-        JLabel lblIcon = new JLabel(loadIcon("https://cdn-icons-png.flaticon.com/512/8763/8763321.png", 100, 100)); // Icon hộp quà
+        JLabel lblIcon = new JLabel(loadIcon("/img/account.png", 100, 100)); // Icon hộp quà
         lblIcon.setAlignmentX(Component.CENTER_ALIGNMENT);
         contentPanel.add(lblIcon);
         contentPanel.add(Box.createVerticalStrut(20));
@@ -177,14 +179,24 @@ public class RedeemTicketUI extends JFrame {
     }
 
     // Load icon từ web
-    private ImageIcon loadIcon(String urlString, int w, int h) {
+    private ImageIcon loadIcon(String path, int width, int height) {
         try {
-            return new ImageIcon(new ImageIcon(new URL(urlString)).getImage().getScaledInstance(w, h, Image.SCALE_SMOOTH));
+            // Sử dụng getResource để lấy file từ classpath (thư mục src/img)
+            URL imgUrl = getClass().getResource(path);
+            if (imgUrl != null) {
+                BufferedImage image = ImageIO.read(imgUrl);
+                if (image != null) {
+                    Image scaledImage = image.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+                    return new ImageIcon(scaledImage);
+                }
+            } else {
+                System.err.println("Không tìm thấy ảnh: " + path);
+            }
         } catch (Exception e) {
-            return null;
+            e.printStackTrace();
         }
+        return null;
     }
-
     // Class bo tròn
     static class RoundedPanel extends JPanel {
         private int radius;

@@ -4,11 +4,14 @@ import data.Order;
 import data.OrderManager;
 import data.Ticket;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -68,7 +71,8 @@ public class MyTicketsUI extends JFrame {
         header.setBackground(Color.WHITE);
         header.setBorder(new EmptyBorder(15, 15, 15, 15));
 
-        JLabel lblBack = new JLabel(" < Trở về");
+    
+        JLabel lblBack = new JLabel(loadIcon("/img/back.png", 24, 24));
         lblBack.setFont(new Font("Segoe UI", Font.BOLD, 14));
         lblBack.setForeground(PRIMARY_COLOR);
         lblBack.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -93,7 +97,24 @@ public class MyTicketsUI extends JFrame {
         
         return header;
     }
-
+    private ImageIcon loadIcon(String path, int width, int height) {
+        try {
+            // Sử dụng getResource để lấy file từ classpath (thư mục src/img)
+            URL imgUrl = getClass().getResource(path);
+            if (imgUrl != null) {
+                BufferedImage image = ImageIO.read(imgUrl);
+                if (image != null) {
+                    Image scaledImage = image.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+                    return new ImageIcon(scaledImage);
+                }
+            } else {
+                System.err.println("Không tìm thấy ảnh: " + path);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     // --- Tạo Card hiển thị thông tin 1 vé ---
     private JPanel createTicketItem(Ticket t, Order o) {
         RoundedPanel p = new RoundedPanel(20, Color.WHITE);

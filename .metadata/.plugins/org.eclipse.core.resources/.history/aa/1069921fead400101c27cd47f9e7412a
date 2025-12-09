@@ -1,0 +1,239 @@
+package view;
+
+
+
+import data.OrderManager;
+import data.Ticket;
+
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.net.URL;
+
+public class RedeemTicketUI extends JFrame {
+
+    private static final Color BG_COLOR = new Color(242, 248, 255);
+    private static final Color PRIMARY_COLOR = new Color(20, 25, 80);
+    private static final Color TEXT_COLOR = new Color(50, 50, 70);
+
+    private JTextField txtCode;
+
+    public RedeemTicketUI() {
+        setTitle("Đổi mã quà tặng");
+        setSize(400, 750);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setResizable(false);
+        getContentPane().setBackground(BG_COLOR);
+        setLayout(new BorderLayout());
+
+        // 1. HEADER
+        add(createHeader(), BorderLayout.NORTH);
+
+        // 2. CONTENT
+        JPanel contentPanel = new JPanel();
+        contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
+        contentPanel.setBackground(BG_COLOR);
+        contentPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
+
+        // -- Hình ảnh minh họa --
+        JLabel lblIcon = new JLabel(loadIcon("https://cdn-icons-png.flaticon.com/512/8763/8763321.png", 100, 100)); // Icon hộp quà
+        lblIcon.setAlignmentX(Component.CENTER_ALIGNMENT);
+        contentPanel.add(lblIcon);
+        contentPanel.add(Box.createVerticalStrut(20));
+
+        // -- Tiêu đề --
+        JLabel lblTitle = new JLabel("Nhập mã quà tặng");
+        lblTitle.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        lblTitle.setForeground(PRIMARY_COLOR);
+        lblTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
+        contentPanel.add(lblTitle);
+
+        JLabel lblSub = new JLabel("Nhập mã code để đổi vé miễn phí");
+        lblSub.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        lblSub.setForeground(Color.GRAY);
+        lblSub.setAlignmentX(Component.CENTER_ALIGNMENT);
+        contentPanel.add(lblSub);
+        
+        contentPanel.add(Box.createVerticalStrut(30));
+
+        // -- Ô nhập liệu --
+        contentPanel.add(createInputSection());
+        contentPanel.add(Box.createVerticalStrut(30));
+
+        // -- Nút xác nhận --
+        contentPanel.add(createRedeemButton());
+
+        // Wrap content in Scroll (để căn giữa theo chiều dọc nếu cần)
+        add(contentPanel, BorderLayout.CENTER);
+    }
+
+    // --- Header ---
+    private JPanel createHeader() {
+        JPanel header = new JPanel(new BorderLayout());
+        header.setBackground(Color.WHITE);
+        header.setBorder(new EmptyBorder(15, 15, 15, 15));
+
+        JLabel lblBack = new JLabel(" < Trở về");
+        lblBack.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        lblBack.setForeground(PRIMARY_COLOR);
+        lblBack.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        lblBack.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                new MetroAppUI().setVisible(true);
+                dispose();
+            }
+        });
+
+        // Dummy để cân đối header
+        JLabel lblTitle = new JLabel("Đổi quà", SwingConstants.CENTER);
+        lblTitle.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        lblTitle.setForeground(PRIMARY_COLOR);
+
+        JLabel dummy = new JLabel("       ");
+
+        header.add(lblBack, BorderLayout.WEST);
+        header.add(lblTitle, BorderLayout.CENTER);
+        header.add(dummy, BorderLayout.EAST);
+        return header;
+    }
+    private ImageIcon loadIcon(String path, int width, int height) {
+        try {
+            // Sử dụng getResource để lấy file từ classpath (thư mục src/img)
+            URL imgUrl = getClass().getResource(path);
+            if (imgUrl != null) {
+                BufferedImage image = ImageIO.read(imgUrl);
+                if (image != null) {
+                    Image scaledImage = image.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+                    return new ImageIcon(scaledImage);
+                }
+            } else {
+                System.err.println("Không tìm thấy ảnh: " + path);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    // --- Input Field ---
+    private JPanel createInputSection() {
+        RoundedPanel p = new RoundedPanel(15, Color.WHITE);
+        p.setLayout(new BorderLayout());
+        p.setBorder(new EmptyBorder(5, 15, 5, 15));
+        p.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
+
+        txtCode = new JTextField();
+        txtCode.setBorder(null); // Xóa viền mặc định
+        txtCode.setFont(new Font("Segoe UI", Font.BOLD, 16));
+        txtCode.setForeground(PRIMARY_COLOR);
+        txtCode.setHorizontalAlignment(JTextField.CENTER);
+        txtCode.setOpaque(false); // Trong suốt để thấy nền bo tròn
+
+        p.add(txtCode, BorderLayout.CENTER);
+        return p;
+    }
+
+    // --- Nút đổi vé ---
+    private JPanel createRedeemButton() {
+        RoundedPanel btn = new RoundedPanel(25, new Color(255, 100, 100)); // Màu cam đỏ nổi bật
+        btn.setLayout(new BorderLayout());
+        btn.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
+        btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        JLabel lblText = new JLabel("ĐỔI VÉ NGAY", SwingConstants.CENTER);
+        lblText.setFont(new Font("Segoe UI", Font.BOLD, 16));
+        lblText.setForeground(Color.WHITE);
+        btn.add(lblText, BorderLayout.CENTER);
+
+        btn.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                handleRedeem();
+            }
+        });
+
+        return btn;
+    }
+
+    // --- Logic xử lý đổi vé ---
+    private void handleRedeem() {
+        String code = txtCode.getText().trim().toUpperCase();
+
+        if (code.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập mã!", "Lỗi", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // --- GIẢ LẬP LOGIC KIỂM TRA MÃ ---
+        if (code.equals("METRO2024") || code.equals("VIPCODE")) {
+            
+            // 1. Tạo vé mới
+            Ticket giftTicket = new Ticket();
+            giftTicket.setSeatNumber("VÉ QUÀ TẶNG (Toàn tuyến)");
+            giftTicket.setPrice(0); // Giá 0 đồng
+            
+            // 2. Lưu vào lịch sử thông qua OrderManager (đã có từ các bước trước)
+            OrderManager.getInstance().processPayment(giftTicket, "Gift Code");
+
+            // 3. Thông báo
+            JOptionPane.showMessageDialog(this, 
+                "Chúc mừng! Bạn nhận được 1 vé miễn phí.\nVui lòng kiểm tra trong 'Vé của tôi'.", 
+                "Thành công", 
+                JOptionPane.INFORMATION_MESSAGE);
+
+            // 4. Chuyển đến màn hình Vé của tôi
+            new MyTicketsUI().setVisible(true);
+            dispose();
+
+        } else {
+            JOptionPane.showMessageDialog(this, "Mã không hợp lệ hoặc đã hết hạn!", "Thất bại", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    // Load icon từ web
+    private ImageIcon loadIcon(String path, int width, int height) {
+        try {
+            // Sử dụng getResource để lấy file từ classpath (thư mục src/img)
+            URL imgUrl = getClass().getResource(path);
+            if (imgUrl != null) {
+                BufferedImage image = ImageIO.read(imgUrl);
+                if (image != null) {
+                    Image scaledImage = image.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+                    return new ImageIcon(scaledImage);
+                }
+            } else {
+                System.err.println("Không tìm thấy ảnh: " + path);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    // Class bo tròn
+    static class RoundedPanel extends JPanel {
+        private int radius;
+        private Color bgColor;
+        public RoundedPanel(int radius, Color bgColor) {
+            this.radius = radius;
+            this.bgColor = bgColor;
+            setOpaque(false);
+        }
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            Graphics2D g2 = (Graphics2D) g;
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g2.setColor(bgColor);
+            g2.fillRoundRect(0, 0, getWidth(), getHeight(), radius, radius);
+        }
+    }
+    
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new RedeemTicketUI().setVisible(true));
+    }
+}
