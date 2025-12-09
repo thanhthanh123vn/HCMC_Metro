@@ -50,8 +50,7 @@ public class MetroAppUI extends JFrame {
         cardPanel.setLayout(null);
         cardPanel.setBounds(20, cardY, 345, 350);
 
-        // --- Hàng 1 (Đã chỉnh sửa để bắt sự kiện click) ---
-        
+      
         // 1. Tạo nút Mua vé
         JPanel btnMuaVe = createMenuItem("Mua vé", "train-ticket.png", 20, 50);
         // Thêm sự kiện Click cho nút Mua vé
@@ -68,16 +67,44 @@ public class MetroAppUI extends JFrame {
         });
         cardPanel.add(btnMuaVe);
 
-        // Các nút còn lại giữ nguyên
-        cardPanel.add(createMenuItem("Vé của tôi", "two-tickets.png", 100, 50));
+     
+        JPanel btnMyTickets = createMenuItem("Vé của tôi", "two-tickets.png", 100, 50);
+        btnMyTickets.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                // Mở màn hình MyTicketsUI
+                MyTicketsUI myTicketsScreen = new MyTicketsUI();
+                myTicketsScreen.setVisible(true);
+                dispose(); // Đóng màn hình chính
+            }
+        });
+        cardPanel.add(btnMyTickets);
         cardPanel.add(createMenuItem("Đổi mã\nlấy vé", "qr-code.png", 180, 50));
-        cardPanel.add(createMenuItem("Thông tin\nvé", "info.png", 260, 50));
+        JPanel btnInfo = createMenuItem("Thông tin\nvé", "info.png", 260, 50);
+        btnInfo.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                new TicketInfoUI().setVisible(true); // Mở màn hình thông tin
+                dispose();
+            }
+        });
+        cardPanel.add(btnInfo);
 
         // --- Hàng 2 ---
         cardPanel.add(createMenuItem("Hành trình", "map-marker.png", 20, 160));
         cardPanel.add(createMenuItem("Mua vé\nSuối Tiên", "theme-park.png", 100, 160));
         cardPanel.add(createMenuItem("Siêu thị\nonline", "shopping-cart.png", 180, 160));
-        cardPanel.add(createMenuItem("Tài khoản", "user-male-circle.png", 260, 160));
+     
+        JPanel btnAccount = createMenuItem("Tài khoản", "user-male-circle.png", 260, 160);
+        btnAccount.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                // Mở màn hình AccountUI
+                new AccountUI().setVisible(true);
+                dispose();
+            }
+        });
+        cardPanel.add(btnAccount);
 
         // Dấu chấm chuyển trang
         JPanel dots = new JPanel() {

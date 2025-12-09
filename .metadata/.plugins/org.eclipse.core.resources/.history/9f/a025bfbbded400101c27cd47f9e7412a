@@ -1,0 +1,24 @@
+package data;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+public class Order {
+    private String id;
+    private Date orderDate;
+    private Customer customer;
+    private List<Ticket> tickets = new ArrayList<>();
+
+    public double calculateTotalPrice() {
+        double total = 0;
+        for (Ticket t : tickets) {
+            total += t.getPrice();
+        }
+        return total;
+    }
+
+    public void assignTicket(Ticket ticket) {
+        this.tickets.add(ticket);
+    }
+}

@@ -1,6 +1,9 @@
 package view;
 
 import javax.swing.*;
+
+import data.Customer;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -102,34 +105,36 @@ public class LoginUI extends JFrame {
         btnLogin.setFont(new Font("Segoe UI", Font.BOLD, 16));
         btnLogin.setFocusPainted(false);
         btnLogin.setBorderPainted(false);
-        
-        btnLogin.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
 
-                String username = txtUser.getText();
-                String password = String.valueOf(txtPass.getPassword());
+     // Trong file view/LoginUI.java
 
-                if (username.equals("tiến") && password.equals("2345678")) {
-                    JOptionPane.showMessageDialog(null, "Đăng nhập thành công!");
-                    new MetroAppUI().setVisible(true);
+        btnLogin.addActionListener(e -> {
+            String username = txtUser.getText();
+            String password = new String(txtPass.getPassword());
 
-                    JFrame current = (JFrame) SwingUtilities.getWindowAncestor(btnLogin);
-                    current.dispose();
-                } else {
-                    JOptionPane.showMessageDialog(null, 
-                        "Sai tài khoản hoặc mật khẩu!", 
-                        "Lỗi", 
-                        JOptionPane.ERROR_MESSAGE
-                    );
-                }
+      
+            data.CustomerManager userManager = data.CustomerManager.getInstance();
+            data.Customer user = userManager.login(username, password);
+
+            if (user != null) {
+           
+                data.SessionManager.setCurrentUser(user);
+
+                JOptionPane.showMessageDialog(this, "Đăng nhập thành công!\nXin chào, " + user.getName());
+
+                new MetroAppUI().setVisible(true);
+                dispose(); 
+            } else {
+                // 4. Đăng nhập thất bại
+                JOptionPane.showMessageDialog(this, 
+                    "Sai tên đăng nhập hoặc mật khẩu!", 
+                    "Lỗi đăng nhập", 
+                    JOptionPane.ERROR_MESSAGE);
             }
         });
-
-
         cardPanel.add(btnLogin);
 
-        // Link Register
+    
         JLabel lblRegister = new JLabel("<html><u>Chưa có tài khoản? Đăng ký ngay</u></html>", SwingConstants.CENTER);
         lblRegister.setForeground(new Color(100, 100, 100));
         lblRegister.setFont(new Font("Segoe UI", Font.PLAIN, 13));

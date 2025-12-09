@@ -49,15 +49,22 @@ public class OrderManager {
         return false;
     }
 
-    // Hàm private để tạo Order từ Ticket
+
     public void createAndSaveOrder(Ticket ticket) {
         Order newOrder = new Order();
-        // Giả sử class Order của bạn có setter cho Date, nếu chưa có hãy thêm vào
-        // newOrder.setOrderDate(new Date()); 
+        newOrder.setOrderDate(new Date()); 
         
-        newOrder.assignTicket(ticket); //
+     
+        Customer currentUser = SessionManager.getCurrentUser();
+        if (currentUser != null) {
+            newOrder.setCustomer(currentUser);
+            System.out.println("Đơn hàng thuộc về: " + currentUser.getName()); // Giả sử Customer có hàm getName()
+        } else {
+            System.out.println("Cảnh báo: Khách hàng chưa đăng nhập (Khách vãng lai)");
+        }
+        // ------------------------------------------------
         
-        // Lưu vào lịch sử (giả lập Database)
+        newOrder.assignTicket(ticket);
         orderHistory.add(newOrder);
         
         System.out.println("Đã tạo đơn hàng mới. Tổng số đơn hàng hiện tại: " + orderHistory.size());

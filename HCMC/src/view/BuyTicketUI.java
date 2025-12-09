@@ -47,13 +47,13 @@ public class BuyTicketUI extends JFrame {
 
         // Section 1: Nổi bật
         mainContent.add(sectionTitle("🔥 Nổi bật 🔥"));
-        mainContent.add(wrap(ticketCard("Vé 1 ngày", "40.000 đ", "https://cdn-icons-png.flaticon.com/512/2972/2972528.png")));
-        mainContent.add(wrap(ticketCard("Vé 3 ngày", "90.000 đ", "https://cdn-icons-png.flaticon.com/512/2972/2972528.png")));
-        mainContent.add(wrap(ticketCard("Vé tháng", "300.000 đ", "https://cdn-icons-png.flaticon.com/512/2972/2972538.png")));
+        mainContent.add(wrap(ticketCard("Vé 1 ngày", "40.000 đ", "vengay.png")));
+        mainContent.add(wrap(ticketCard("Vé 3 ngày", "90.000 đ", "ve3ngay.png")));
+        mainContent.add(wrap(ticketCard("Vé tháng", "300.000 đ", "vethang.png")));
 
         // Section 2: Ưu đãi
         mainContent.add(sectionTitle("Ưu đãi Học sinh 🎒 Sinh viên 🎓"));
-        mainContent.add(wrap(ticketCard("Vé tháng HSSV", "150.000 đ", "https://cdn-icons-png.flaticon.com/512/2972/2972545.png")));
+        mainContent.add(wrap(ticketCard("Vé tháng HSSV", "150.000 đ", "vethang.png")));
 
         // ==== CHỌN GA METRO (SỬ DỤNG DATA TỪ SERVICE) ==== //
         JPanel stationPanel = new JPanel();
@@ -136,8 +136,7 @@ public class BuyTicketUI extends JFrame {
         add(bottomArea, BorderLayout.SOUTH);
     }
 
-    // ... (Giữ nguyên các hàm header(), welcomeCard(), sectionTitle(), loadIcon(), RoundedPanel) ...
-    // ... Bạn chỉ cần copy lại các hàm createBookButton, createBottomBar, ticketCard từ code cũ ...
+   
 
     // Ví dụ hàm createBookButton để code hoàn chỉnh:
     private JPanel createBookButton() {
@@ -188,7 +187,7 @@ public class BuyTicketUI extends JFrame {
  		p.setBorder(new EmptyBorder(15, 20, 10, 20));
 
  		// Icon Home
- 		JLabel home = new JLabel(loadIcon("https://cdn-icons-png.flaticon.com/512/25/25694.png", 24, 24)); // Icon Home
+ 		JLabel home = new JLabel(loadIcon("trangchu.png", 24, 24)); // Icon Home
  																											// đơn giản
 
  		JLabel title = new JLabel("Mua vé", SwingConstants.CENTER);
@@ -215,7 +214,7 @@ public class BuyTicketUI extends JFrame {
  		p.setPreferredSize(new Dimension(380, 90));
  		p.setBorderColor(CARD_BORDER);
 
- 		JLabel avatar = new JLabel(loadIcon("https://cdn-icons-png.flaticon.com/512/4140/4140048.png", 50, 50)); // Avatar
+ 		JLabel avatar = new JLabel(loadIcon("user.png", 50, 50)); // Avatar
  																													// cute
 
  		JLabel text = new JLabel("<html><div style='width: 200px;'>"
@@ -327,15 +326,14 @@ public class BuyTicketUI extends JFrame {
  		bar.setPreferredSize(new Dimension(400, 70));
  		bar.setBorder(new EmptyBorder(5, 0, 0, 0));
 
- 		// Thêm một panel giả bóng đổ ở trên (opsional)
  		JPanel container = new JPanel(new BorderLayout());
  		container.add(new JSeparator(), BorderLayout.NORTH);
  		container.add(bar, BorderLayout.CENTER);
 
- 		// Các nút nav (Giả lập)
- 		bar.add(createNavButton("https://cdn-icons-png.flaticon.com/512/1828/1828884.png", "")); // QR
- 		bar.add(createNavButton("https://cdn-icons-png.flaticon.com/512/5448/5448104.png", "")); // Vé
- 		bar.add(createNavButton("https://cdn-icons-png.flaticon.com/512/2961/2961948.png", "")); // Lịch sử
+ 		
+ 		bar.add(createNavButton("qr.png", "")); // QR
+ 		bar.add(createNavButton("ve.png", "")); // Vé
+ 		bar.add(createNavButton("lichsu.png", "")); // Lịch sử
 
  		return container;
  	}

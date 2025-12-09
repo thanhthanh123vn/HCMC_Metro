@@ -1,0 +1,55 @@
+package data;
+
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.List;
+
+public class CustomerManager {
+    private static CustomerManager instance;
+    private List<Customer> customerList;
+    private static Hashtable<String, Customer> customers = new Hashtable<>();
+    public CustomerManager() {
+       
+ 
+    	  customers.put("admin", 
+    	            new Customer("admin", "admin@gmail.com", "123456"));
+    	  customers.put("tien", 
+    	            new Customer("tien", "tien@gmail.com", "2345678"));
+    }
+
+    public static CustomerManager getInstance() {
+        if (instance == null) {
+            instance = new CustomerManager();
+        }
+        return instance;
+    }
+
+    /**
+     * Xử lý đăng nhập
+     */
+ 
+      
+
+        public boolean register(String name, String email, String pass) {
+            if (customers.containsKey(phone)) {
+                return false; // đã tồn tại
+            }
+
+            customers.put(phone, new Customer(name, phone, pass));
+            return true;
+        }
+
+        public Customer login(String name, String pass) {
+            Customer c = customers.get(name);
+            if (c != null && c.getPassword().equals(pass)) {
+                return c;
+            }
+            return null;
+        }
+    
+
+
+    public List<Customer> getCustomerList() {
+        return customerList;
+    }
+}

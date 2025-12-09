@@ -1,0 +1,79 @@
+package data;
+
+package data;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class CustomerManager {
+    private static CustomerManager instance;
+    private List<Customer> customerList;
+
+    private CustomerManager() {
+        customerList = new ArrayList<>();
+        // Tạo sẵn một tài khoản admin/test để dễ kiểm tra
+        // Giả sử Customer có constructor: Customer(id, name, username, password, ...)
+        // Bạn cần điều chỉnh theo đúng constructor trong file Customer.java của bạn
+        // Ví dụ: customerList.add(new Customer("C001", "Admin User", "admin", "123"));
+    }
+
+    public static CustomerManager getInstance() {
+        if (instance == null) {
+            instance = new CustomerManager();
+        }
+        return instance;
+    }
+
+    // --- CÁC HÀM XỬ LÝ LOGIC ---
+
+    /**
+     * Đăng nhập người dùng
+     * @param username Tên đăng nhập
+     * @param password Mật khẩu
+     * @return Đối tượng Customer nếu đúng, null nếu sai
+     */
+    public Customer login(String username, String password) {
+        for (Customer c : customerList) {
+            // Giả sử Customer có getter getUsername() và getPassword()
+            // Lưu ý: Cần thêm getter trong Customer.java nếu chưa có
+             if (c.getId().equals(username) || (c.getName() != null && c.getName().equals(username))) {
+                 // Ở đây tôi đang giả định logic check, bạn cần sửa lại theo thuộc tính thực tế
+                 // Tốt nhất là thêm field 'username', 'password' vào Customer.java
+                 return c;
+             }
+        }
+        return null;
+    }
+
+    /**
+     * Đăng ký người dùng mới
+     * @param name Tên hiển thị
+     * @param username Tên đăng nhập
+     * @param password Mật khẩu
+     * @return true nếu đăng ký thành công
+     */
+    public boolean register(String name, String username, String password) {
+        // 1. Kiểm tra trùng lặp
+        for (Customer c : customerList) {
+            // Logic kiểm tra trùng username...
+        }
+
+        // 2. Tạo ID mới (tự động tăng hoặc random)
+        String newId = "C" + System.currentTimeMillis(); 
+
+        // 3. Tạo đối tượng Customer
+        // Customer newUser = new Customer(newId, name); 
+        // newUser.setUsername(username); // Cần thêm setter này vào Customer
+        // newUser.setPassword(password); // Cần thêm setter này vào Customer
+        
+        // 4. Thêm vào danh sách
+        // customerList.add(newUser);
+        
+        System.out.println("Đã đăng ký user mới: " + name);
+        return true;
+    }
+
+    public List<Customer> getCustomerList() {
+        return customerList;
+    }
+}

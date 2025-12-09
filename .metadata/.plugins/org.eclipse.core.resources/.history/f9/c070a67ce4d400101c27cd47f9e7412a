@@ -1,0 +1,62 @@
+package data;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class CustomerManager {
+    private static CustomerManager instance;
+    private List<Customer> customerList;
+
+    public CustomerManager() {
+        customerList = new ArrayList<>();
+        // Tạo dữ liệu mẫu: ID, Tên hiển thị, Username, Password
+        customerList.add(new Customer("C001", "admin", "admin@gmail.com", "123456"));
+        customerList.add(new Customer("C002", "tien", "tien@gmail.com", "2345678"));
+    }
+
+    public static CustomerManager getInstance() {
+        if (instance == null) {
+            instance = new CustomerManager();
+        }
+        return instance;
+    }
+
+    /**
+     * Xử lý đăng nhập
+     */
+    public Customer login(String username, String password) {
+        for (Customer c : customerList) {
+            
+            if (c.getName().equals(username) && c.getPassword().equals(password)) {
+                 return c; // Trả về đối tượng Customer nếu đúng
+            }
+        }
+        return null; 
+    }
+
+    public boolean register(String name, String username, String password) {
+       
+        for (Customer c : customerList) {
+            if (c.getName().equals(username)) {
+                System.out.println("Đăng ký thất bại: Username '" + username + "' đã tồn tại.");
+                return false;
+            }
+        }
+
+        
+        String newId = "C" + System.currentTimeMillis(); 
+
+       
+        Customer newUser = new Customer(newId, name, username, password);
+        
+       
+        customerList.add(newUser);
+        
+        System.out.println("Đã đăng ký thành công user: " + username);
+        return true;
+    }
+
+    public List<Customer> getCustomerList() {
+        return customerList;
+    }
+}

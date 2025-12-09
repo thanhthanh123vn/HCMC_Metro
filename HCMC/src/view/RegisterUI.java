@@ -1,6 +1,9 @@
 package view;
 
 import javax.swing.*;
+
+import data.CustomerManager;
+
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -88,6 +91,9 @@ public class RegisterUI extends JFrame {
         
         btnRegister.addActionListener(e -> {
             JOptionPane.showMessageDialog(this, "Đăng ký thành công! Vui lòng đăng nhập.");
+            CustomerManager customerManager = new CustomerManager();
+            customerManager.register(getName(), getWarningString(), getName());
+
             new LoginUI().setVisible(true);
             dispose();
         });

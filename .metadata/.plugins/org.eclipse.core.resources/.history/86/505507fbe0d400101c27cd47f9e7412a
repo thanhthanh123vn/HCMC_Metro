@@ -1,0 +1,63 @@
+package data;
+
+package data;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class CustomerManager {
+    private static CustomerManager instance;
+    private List<Customer> customerList;
+
+    private CustomerManager() {
+        customerList = new ArrayList<>();
+        customerList.add(new Customer("C001", "Admin User", "admin", "123"));
+    }
+
+    public static CustomerManager getInstance() {
+        if (instance == null) {
+            instance = new CustomerManager();
+        }
+        return instance;
+    }
+
+
+
+  
+    public Customer login(String username, String password) {
+        for (Customer c : customerList) {
+          
+             if (c.getId().equals(username) || (c.getName() != null && c.getName().equals(username))) {
+               
+                 return c;
+             }
+        }
+        return null;
+    }
+
+
+    public boolean register(String name, String username, String password) {
+        // 1. Kiểm tra trùng lặp
+        for (Customer c : customerList) {
+            // Logic kiểm tra trùng username...
+        }
+
+        // 2. Tạo ID mới (tự động tăng hoặc random)
+        String newId = "C" + System.currentTimeMillis(); 
+
+
+        Customer newUser = new Customer(name, password); 
+        newUser.setUsername(username); // Cần thêm setter này vào Customer
+        newUser.setPassword(password); // Cần thêm setter này vào Customer
+        
+   
+         customerList.add(newUser);
+        
+        System.out.println("Đã đăng ký user mới: " + name);
+        return true;
+    }
+
+    public List<Customer> getCustomerList() {
+        return customerList;
+    }
+}

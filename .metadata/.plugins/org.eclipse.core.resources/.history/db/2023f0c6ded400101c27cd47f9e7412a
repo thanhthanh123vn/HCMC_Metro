@@ -1,0 +1,23 @@
+package data;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+public class Order {
+    // ... các thuộc tính cũ giữ nguyên
+    private String id;
+    private Date orderDate = new Date(); // Khởi tạo ngày hiện tại
+    private List<Ticket> tickets = new ArrayList<>();
+
+    // ... các code cũ giữ nguyên
+
+    // --- THÊM CÁC HÀM NÀY ---
+    public List<Ticket> getTickets() {
+        return tickets;
+    }
+
+    public Date getOrderDate() {
+        return orderDate;
+    }
+}

@@ -1,0 +1,26 @@
+package data;
+
+import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.List;
+import java.util.ArrayList;
+
+// Lớp Khách hàng
+public class Customer {
+    private String id;
+    private String name;
+    private String email;
+    private String phone;
+    private List<Order> orders;
+
+    public void updateContactInfo(String email, String phone) {
+        this.email = email;
+        this.phone = phone;
+    }
+
+    public void setOrder(Order order) {
+        // Logic thêm order
+    }
+}
+
+
