@@ -11,286 +11,288 @@ import java.net.URL;
 
 public class BuyTicketUI extends JFrame {
 
-    // Màu sắc lấy từ ảnh mẫu
-    private final Color PRIMARY = new Color(20, 25, 80);    // Xanh đậm
-    private final Color BG = new Color(242, 248, 255);      // Nền xanh rất nhạt
-    private final Color CARD_BG = Color.WHITE;
-    private final Color CARD_BORDER = new Color(210, 225, 245); // Viền thẻ nhạt
-    private final Color ICON_BG = new Color(225, 240, 255); // Nền dưới icon vé
-    public Ticket ticket = new Ticket();
+	// Màu sắc lấy từ ảnh mẫu
+	private final Color PRIMARY = new Color(20, 25, 80); // Xanh đậm
+	private final Color BG = new Color(242, 248, 255); // Nền xanh rất nhạt
+	private final Color CARD_BG = Color.WHITE;
+	private final Color CARD_BORDER = new Color(210, 225, 245); // Viền thẻ nhạt
+	private final Color ICON_BG = new Color(225, 240, 255); // Nền dưới icon vé
+	public Ticket ticket = new Ticket();
 
-    public BuyTicketUI() {
-        setTitle("Mua vé Metro");
-        setSize(430, 850); // Tăng kích thước chút để vừa giao diện mobile
-        setLocationRelativeTo(null);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setLayout(new BorderLayout());
-        getContentPane().setBackground(BG);
+	public BuyTicketUI() {
+		setTitle("Mua vé Metro");
+		setSize(430, 850); // Tăng kích thước chút để vừa giao diện mobile
+		setLocationRelativeTo(null);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setLayout(new BorderLayout());
+		getContentPane().setBackground(BG);
 
-        // --- CONTENT CHÍNH (SCROLL) ---
-        JPanel mainContent = new JPanel();
-        mainContent.setBackground(BG);
-        mainContent.setLayout(new BoxLayout(mainContent, BoxLayout.Y_AXIS));
-        mainContent.setBorder(new EmptyBorder(0, 0, 80, 0)); // Chừa chỗ cho bottom bar
+		// --- CONTENT CHÍNH (SCROLL) ---
+		JPanel mainContent = new JPanel();
+		mainContent.setBackground(BG);
+		mainContent.setLayout(new BoxLayout(mainContent, BoxLayout.Y_AXIS));
+		mainContent.setBorder(new EmptyBorder(0, 0, 80, 0)); // Chừa chỗ cho bottom bar
 
-        // Header
-        mainContent.add(header());
-        
-        // Welcome Card
-        mainContent.add(wrap(welcomeCard()));
+		// Header
+		mainContent.add(header());
 
-        // Section 1
-        mainContent.add(sectionTitle("🔥 Nổi bật 🔥"));
-        mainContent.add(wrap(ticketCard("Vé 1 ngày", "40.000 đ", "https://cdn-icons-png.flaticon.com/512/2972/2972528.png")));
-        mainContent.add(wrap(ticketCard("Vé 3 ngày", "90.000 đ", "https://cdn-icons-png.flaticon.com/512/2972/2972528.png")));
-        mainContent.add(wrap(ticketCard("Vé tháng", "300.000 đ", "https://cdn-icons-png.flaticon.com/512/2972/2972538.png")));
+		// Welcome Card
+		mainContent.add(wrap(welcomeCard()));
 
-        // Section 2
-        mainContent.add(sectionTitle("Ưu đãi Học sinh 🎒 Sinh viên 🎓"));
-        mainContent.add(wrap(ticketCard("Vé tháng HSSV", "150.000 đ", "https://cdn-icons-png.flaticon.com/512/2972/2972545.png")));
+		// Section 1
+		mainContent.add(sectionTitle("🔥 Nổi bật 🔥"));
+		mainContent.add(
+				wrap(ticketCard("Vé 1 ngày", "40.000 đ", "https://cdn-icons-png.flaticon.com/512/2972/2972528.png")));
+		mainContent.add(
+				wrap(ticketCard("Vé 3 ngày", "90.000 đ", "https://cdn-icons-png.flaticon.com/512/2972/2972528.png")));
+		mainContent.add(
+				wrap(ticketCard("Vé tháng", "300.000 đ", "https://cdn-icons-png.flaticon.com/512/2972/2972538.png")));
 
-        // Scroll Pane
-        JScrollPane scroll = new JScrollPane(mainContent);
-        scroll.setBorder(null);
-        scroll.getVerticalScrollBar().setUnitIncrement(16);
-        scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		// Section 2
+		mainContent.add(sectionTitle("Ưu đãi Học sinh 🎒 Sinh viên 🎓"));
+		mainContent.add(wrap(
+				ticketCard("Vé tháng HSSV", "150.000 đ", "https://cdn-icons-png.flaticon.com/512/2972/2972545.png")));
 
-        add(scroll, BorderLayout.CENTER);
-        
-        // --- BOTTOM NAVIGATION BAR ---
-        add(createBottomBar(), BorderLayout.SOUTH);
-    }
+		// Scroll Pane
+		JScrollPane scroll = new JScrollPane(mainContent);
+		scroll.setBorder(null);
+		scroll.getVerticalScrollBar().setUnitIncrement(16);
+		scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
-    // ================= HEADER =================
-    private JPanel header() {
-        JPanel p = new JPanel(new BorderLayout());
-        p.setBackground(BG);
-        p.setBorder(new EmptyBorder(15, 20, 10, 20));
+		add(scroll, BorderLayout.CENTER);
 
-        // Icon Home
-        JLabel home = new JLabel(loadIcon("https://cdn-icons-png.flaticon.com/512/25/25694.png", 24, 24)); // Icon Home đơn giản
-        
-        JLabel title = new JLabel("Mua vé", SwingConstants.CENTER);
-        title.setFont(new Font("SansSerif", Font.BOLD, 20));
-        title.setForeground(PRIMARY);
+		// --- BOTTOM NAVIGATION BAR ---
+		add(createBottomBar(), BorderLayout.SOUTH);
+	}
 
-        // Dummy label bên phải để cân giữa title
-        JLabel dummy = new JLabel();
-        dummy.setPreferredSize(new Dimension(24, 24));
+	// ================= HEADER =================
+	private JPanel header() {
+		JPanel p = new JPanel(new BorderLayout());
+		p.setBackground(BG);
+		p.setBorder(new EmptyBorder(15, 20, 10, 20));
 
-        p.add(home, BorderLayout.WEST);
-        p.add(title, BorderLayout.CENTER);
-        p.add(dummy, BorderLayout.EAST);
+		// Icon Home
+		JLabel home = new JLabel(loadIcon("https://cdn-icons-png.flaticon.com/512/25/25694.png", 24, 24)); // Icon Home
+																											// đơn giản
 
-        return p;
-    }
+		JLabel title = new JLabel("Mua vé", SwingConstants.CENTER);
+		title.setFont(new Font("SansSerif", Font.BOLD, 20));
+		title.setForeground(PRIMARY);
 
-    // ================= WELCOME CARD =================
-    private JPanel welcomeCard() {
-        // Sử dụng RoundedPanel để bo góc
-        RoundedPanel p = new RoundedPanel(25, CARD_BG);
-        p.setLayout(new BorderLayout(15, 0));
-        p.setBorder(new EmptyBorder(15, 15, 15, 15));
-        p.setPreferredSize(new Dimension(380, 90));
-        p.setBorderColor(CARD_BORDER);
+		// Dummy label bên phải để cân giữa title
+		JLabel dummy = new JLabel();
+		dummy.setPreferredSize(new Dimension(24, 24));
 
-        JLabel avatar = new JLabel(loadIcon("https://cdn-icons-png.flaticon.com/512/4140/4140048.png", 50, 50)); // Avatar cute
+		p.add(home, BorderLayout.WEST);
+		p.add(title, BorderLayout.CENTER);
+		p.add(dummy, BorderLayout.EAST);
 
-        JLabel text = new JLabel(
-                "<html><div style='width: 200px;'>" +
-                "<span style='font-size:11px; color:#212568; font-weight:bold;'>Chào mừng, Tiến!</span><br/>" +
-                "<span style='font-size:10px; color:#555555;'>Bắt đầu các trải nghiệm mới cùng Metro nhé!</span>" +
-                "</div></html>"
-        );
+		return p;
+	}
 
-        p.add(avatar, BorderLayout.WEST);
-        p.add(text, BorderLayout.CENTER);
+	// ================= WELCOME CARD =================
+	private JPanel welcomeCard() {
+		// Sử dụng RoundedPanel để bo góc
+		RoundedPanel p = new RoundedPanel(25, CARD_BG);
+		p.setLayout(new BorderLayout(15, 0));
+		p.setBorder(new EmptyBorder(15, 15, 15, 15));
+		p.setPreferredSize(new Dimension(380, 90));
+		p.setBorderColor(CARD_BORDER);
 
-        return p;
-    }
+		JLabel avatar = new JLabel(loadIcon("https://cdn-icons-png.flaticon.com/512/4140/4140048.png", 50, 50)); // Avatar
+																													// cute
 
-    // ================= SECTION TITLE =================
-    private Component sectionTitle(String t) {
-        JPanel p = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        p.setBackground(BG);
-        p.setBorder(new EmptyBorder(10, 20, 0, 0));
-        
-        JLabel lbl = new JLabel(t);
-        lbl.setFont(new Font("SansSerif", Font.BOLD, 16));
-        lbl.setForeground(PRIMARY);
-        
-        p.add(lbl);
-        return p;
-    }
+		JLabel text = new JLabel("<html><div style='width: 200px;'>"
+				+ "<span style='font-size:11px; color:#212568; font-weight:bold;'>Chào mừng, Tiến!</span><br/>"
+				+ "<span style='font-size:10px; color:#555555;'>Bắt đầu các trải nghiệm mới cùng Metro nhé!</span>"
+				+ "</div></html>");
 
-    // ================= TICKET CARD =================
- // ================= TICKET CARD =================
-    private JPanel ticketCard(String name, String price, String iconUrl) {
-        RoundedPanel p = new RoundedPanel(20, CARD_BG);
-        p.setLayout(new BorderLayout(15, 0));
-        p.setBorder(new EmptyBorder(15, 15, 15, 15));
-        p.setPreferredSize(new Dimension(380, 85));
-        p.setBorderColor(CARD_BORDER);
+		p.add(avatar, BorderLayout.WEST);
+		p.add(text, BorderLayout.CENTER);
 
-        // Icon Container
-        RoundedPanel iconContainer = new RoundedPanel(15, ICON_BG);
-        iconContainer.setPreferredSize(new Dimension(50, 50));
-        iconContainer.setLayout(new GridBagLayout());
-        iconContainer.add(new JLabel(loadIcon(iconUrl, 32, 32)));
+		return p;
+	}
 
-        // Text Info
-        JPanel textPanel = new JPanel();
-        textPanel.setLayout(new BoxLayout(textPanel, BoxLayout.Y_AXIS));
-        textPanel.setOpaque(false);
+	// ================= SECTION TITLE =================
+	private Component sectionTitle(String t) {
+		JPanel p = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		p.setBackground(BG);
+		p.setBorder(new EmptyBorder(10, 20, 0, 0));
 
-        JLabel title = new JLabel(name);
-        title.setFont(new Font("SansSerif", Font.BOLD, 15));
-        title.setForeground(PRIMARY);
-        title.setAlignmentX(Component.LEFT_ALIGNMENT);
+		JLabel lbl = new JLabel(t);
+		lbl.setFont(new Font("SansSerif", Font.BOLD, 16));
+		lbl.setForeground(PRIMARY);
 
-        JLabel money = new JLabel(price);
-        money.setFont(new Font("SansSerif", Font.PLAIN, 14));
-        money.setForeground(Color.DARK_GRAY);
-        money.setAlignmentX(Component.LEFT_ALIGNMENT);
+		p.add(lbl);
+		return p;
+	}
 
-        textPanel.add(Box.createVerticalStrut(2));
-        textPanel.add(title);
-        textPanel.add(Box.createVerticalStrut(4));
-        textPanel.add(money);
+	// ================= TICKET CARD =================
+	private JPanel ticketCard(String name, String price, String iconUrl) {
+		RoundedPanel p = new RoundedPanel(20, CARD_BG);
+		p.setLayout(new BorderLayout(15, 0));
+		p.setBorder(new EmptyBorder(15, 15, 15, 15));
+		p.setPreferredSize(new Dimension(380, 85));
+		p.setBorderColor(CARD_BORDER);
 
-        p.add(iconContainer, BorderLayout.WEST);
-        p.add(textPanel, BorderLayout.CENTER);
+		// Icon Container
+		RoundedPanel iconContainer = new RoundedPanel(15, ICON_BG);
+		iconContainer.setPreferredSize(new Dimension(50, 50));
+		iconContainer.setLayout(new GridBagLayout());
+		iconContainer.add(new JLabel(loadIcon(iconUrl, 32, 32)));
 
-        // ================== SỰ KIỆN CLICK VÀO CARD ==================
-        p.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		// Text Info
+		JPanel textPanel = new JPanel();
+		textPanel.setLayout(new BoxLayout(textPanel, BoxLayout.Y_AXIS));
+		textPanel.setOpaque(false);
 
-        p.addMouseListener(new java.awt.event.MouseAdapter() {
-            @Override
-            public void mouseClicked(java.awt.event.MouseEvent e) {
-            	
-            	ticket.setSeatNumber(name);
-            	String priceNumber = price.replace(".", "").replace(" đ", "").trim();
-            	double priceValue = Double.parseDouble(priceNumber);
-            	ticket.setPrice(priceValue);
+		JLabel title = new JLabel(name);
+		title.setFont(new Font("SansSerif", Font.BOLD, 15));
+		title.setForeground(PRIMARY);
+		title.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-                JOptionPane.showMessageDialog(
-                        null,
-                        "Bạn đã chọn: " + name + "\nGiá: " + price,
-                        "Thông tin vé",
-                        JOptionPane.INFORMATION_MESSAGE
-                );
-              
-                // ❗ Bạn có thể mở màn hình mua vé ở đây
-                // new PaymentUI(name, price).setVisible(true);
-            }
+		JLabel money = new JLabel(price);
+		money.setFont(new Font("SansSerif", Font.PLAIN, 14));
+		money.setForeground(Color.DARK_GRAY);
+		money.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-            @Override
-            public void mouseEntered(java.awt.event.MouseEvent e) {
-                p.setBackground(new Color(235, 245, 255)); // hover sáng
-                p.repaint();
-            }
+		textPanel.add(Box.createVerticalStrut(2));
+		textPanel.add(title);
+		textPanel.add(Box.createVerticalStrut(4));
+		textPanel.add(money);
 
-            @Override
-            public void mouseExited(java.awt.event.MouseEvent e) {
-                p.setBackground(CARD_BG);
-                p.repaint();
-            }
-        });
+		p.add(iconContainer, BorderLayout.WEST);
+		p.add(textPanel, BorderLayout.CENTER);
 
-        return p;
-    }
+		// ================== SỰ KIỆN CLICK VÀO CARD ==================
+		p.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
-    
-    // ================= BOTTOM NAVIGATION BAR =================
-    private JPanel createBottomBar() {
-        JPanel bar = new JPanel();
-        bar.setBackground(Color.WHITE);
-        bar.setLayout(new GridLayout(1, 4));
-        bar.setPreferredSize(new Dimension(400, 70));
-        bar.setBorder(new EmptyBorder(5, 0, 0, 0));
-        
-        // Thêm một panel giả bóng đổ ở trên (opsional)
-        JPanel container = new JPanel(new BorderLayout());
-        container.add(new JSeparator(), BorderLayout.NORTH);
-        container.add(bar, BorderLayout.CENTER);
+		p.addMouseListener(new java.awt.event.MouseAdapter() {
+			@Override
+			public void mouseClicked(java.awt.event.MouseEvent e) {
 
-        // Các nút nav (Giả lập)
-        bar.add(createNavButton("https://cdn-icons-png.flaticon.com/512/1828/1828884.png", "")); // QR
-        bar.add(createNavButton("https://cdn-icons-png.flaticon.com/512/5448/5448104.png", "")); // Vé
-        bar.add(createNavButton("https://cdn-icons-png.flaticon.com/512/2961/2961948.png", "")); // Lịch sử
-        
-        return container;
-    }
+				ticket.setSeatNumber(name);
 
-    private JLabel createNavButton(String iconUrl, String text) {
-        JLabel lbl = new JLabel(loadIcon(iconUrl, 24, 24));
-        lbl.setHorizontalAlignment(SwingConstants.CENTER);
-        return lbl;
-    }
+				// Xử lý giá tiền từ dạng "120.000 đ" -> 120000
+				String priceNumber = price.replace(".", "").replace("đ", "").trim();
+				double priceValue = Double.parseDouble(priceNumber);
+				ticket.setPrice(priceValue);
 
-    // ================= UTILS =================
-    private JPanel wrap(JPanel content) {
-        JPanel wrapper = new JPanel();
-        wrapper.setBackground(BG);
-        wrapper.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 8)); // Khoảng cách dọc giữa các thẻ
-        wrapper.add(content);
-        return wrapper;
-    }
+				JOptionPane.showMessageDialog(null, "Bạn đã chọn: " + name + "\nGiá: " + price, "Thông tin vé",
+						JOptionPane.INFORMATION_MESSAGE);
 
-    private ImageIcon loadIcon(String url, int w, int h) {
-        try {
-            Image img = new ImageIcon(new URL(url)).getImage()
-                    .getScaledInstance(w, h, Image.SCALE_SMOOTH);
-            return new ImageIcon(img);
-        } catch (Exception e) {
-            return new ImageIcon(); // Trả về icon rỗng nếu lỗi mạng
-        }
-    }
+				Window currentWindow = SwingUtilities.getWindowAncestor(p);
+				if (currentWindow != null) {
+					currentWindow.dispose();
+				}
+				new OrderScreenUI(ticket);
+			}
 
+			@Override
+			public void mouseEntered(java.awt.event.MouseEvent e) {
+				p.setBackground(new Color(235, 245, 255)); // hover sáng
+				p.repaint();
+			}
 
-    static class RoundedPanel extends JPanel {
-        private Color backgroundColor;
-        private int cornerRadius = 15;
-        private Color borderColor = null;
+			@Override
+			public void mouseExited(java.awt.event.MouseEvent e) {
+				p.setBackground(CARD_BG);
+				p.repaint();
+			}
+		});
 
-        public RoundedPanel(int radius, Color bgColor) {
-            super();
-            this.cornerRadius = radius;
-            this.backgroundColor = bgColor;
-            setOpaque(false); // Quan trọng để vẽ đè lên
-        }
+		return p;
+	}
 
-        public void setBorderColor(Color c) {
-            this.borderColor = c;
-        }
+	// ================= BOTTOM NAVIGATION BAR =================
+	private JPanel createBottomBar() {
+		JPanel bar = new JPanel();
+		bar.setBackground(Color.WHITE);
+		bar.setLayout(new GridLayout(1, 4));
+		bar.setPreferredSize(new Dimension(400, 70));
+		bar.setBorder(new EmptyBorder(5, 0, 0, 0));
 
-        @Override
-        protected void paintComponent(Graphics g) {
-            super.paintComponent(g);
-            Graphics2D graphics = (Graphics2D) g;
-            graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		// Thêm một panel giả bóng đổ ở trên (opsional)
+		JPanel container = new JPanel(new BorderLayout());
+		container.add(new JSeparator(), BorderLayout.NORTH);
+		container.add(bar, BorderLayout.CENTER);
 
-            // Vẽ nền
-            if (backgroundColor != null) {
-                graphics.setColor(backgroundColor);
-                graphics.fillRoundRect(0, 0, getWidth() - 1, getHeight() - 1, cornerRadius, cornerRadius);
-            }
+		// Các nút nav (Giả lập)
+		bar.add(createNavButton("https://cdn-icons-png.flaticon.com/512/1828/1828884.png", "")); // QR
+		bar.add(createNavButton("https://cdn-icons-png.flaticon.com/512/5448/5448104.png", "")); // Vé
+		bar.add(createNavButton("https://cdn-icons-png.flaticon.com/512/2961/2961948.png", "")); // Lịch sử
 
-            // Vẽ viền (nếu có)
-            if (borderColor != null) {
-                graphics.setColor(borderColor);
-                graphics.setStroke(new BasicStroke(1)); // Độ dày viền
-                graphics.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, cornerRadius, cornerRadius);
-            }
-        }
-    }
+		return container;
+	}
 
-    public static void main(String[] args) {
- 
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (Exception ignored) {}
-        
-        SwingUtilities.invokeLater(() -> new BuyTicketUI().setVisible(true));
-    }
+	private JLabel createNavButton(String iconUrl, String text) {
+		JLabel lbl = new JLabel(loadIcon(iconUrl, 24, 24));
+		lbl.setHorizontalAlignment(SwingConstants.CENTER);
+		return lbl;
+	}
+
+	// ================= UTILS =================
+	private JPanel wrap(JPanel content) {
+		JPanel wrapper = new JPanel();
+		wrapper.setBackground(BG);
+		wrapper.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 8)); // Khoảng cách dọc giữa các thẻ
+		wrapper.add(content);
+		return wrapper;
+	}
+
+	private ImageIcon loadIcon(String url, int w, int h) {
+		try {
+			Image img = new ImageIcon(new URL(url)).getImage().getScaledInstance(w, h, Image.SCALE_SMOOTH);
+			return new ImageIcon(img);
+		} catch (Exception e) {
+			return new ImageIcon(); // Trả về icon rỗng nếu lỗi mạng
+		}
+	}
+
+	static class RoundedPanel extends JPanel {
+		private Color backgroundColor;
+		private int cornerRadius = 15;
+		private Color borderColor = null;
+
+		public RoundedPanel(int radius, Color bgColor) {
+			super();
+			this.cornerRadius = radius;
+			this.backgroundColor = bgColor;
+			setOpaque(false); // Quan trọng để vẽ đè lên
+		}
+
+		public void setBorderColor(Color c) {
+			this.borderColor = c;
+		}
+
+		@Override
+		protected void paintComponent(Graphics g) {
+			super.paintComponent(g);
+			Graphics2D graphics = (Graphics2D) g;
+			graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+			// Vẽ nền
+			if (backgroundColor != null) {
+				graphics.setColor(backgroundColor);
+				graphics.fillRoundRect(0, 0, getWidth() - 1, getHeight() - 1, cornerRadius, cornerRadius);
+			}
+
+			// Vẽ viền (nếu có)
+			if (borderColor != null) {
+				graphics.setColor(borderColor);
+				graphics.setStroke(new BasicStroke(1)); // Độ dày viền
+				graphics.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, cornerRadius, cornerRadius);
+			}
+		}
+	}
+
+	public static void main(String[] args) {
+
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (Exception ignored) {
+		}
+
+		SwingUtilities.invokeLater(() -> new BuyTicketUI().setVisible(true));
+	}
 }

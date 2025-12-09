@@ -1,9 +1,16 @@
 package view;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+
+import data.Ticket;
+
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.geom.RoundRectangle2D;
 import java.net.URL;
+import java.text.DecimalFormat;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 
@@ -17,19 +24,28 @@ public class OrderScreenUI extends JFrame {
     private static final Font FONT_BOLD = new Font("Segoe UI", Font.BOLD, 14);
     private static final Font FONT_PLAIN = new Font("Segoe UI", Font.PLAIN, 14);
     private static final Font FONT_HEADER = new Font("Segoe UI", Font.BOLD, 18);
+    public Ticket ticket;
 
     // --- LINK ICON WEB (Bạn có thể thay link ảnh khác vào đây) ---
     private static final String ICON_BACK_URL = "https://img.icons8.com/ios-glyphs/30/000000/long-arrow-left.png";
     private static final String ICON_CARD_URL = "https://img.icons8.com/ios/50/14143C/bank-cards--v1.png";
     private static final String ICON_CHEVRON_URL = "https://img.icons8.com/ios-glyphs/30/808080/chevron-right.png";
-
-    public OrderScreenUI() {
+    private String category ;
+    private double price ;
+    int priceInt;
+    public OrderScreenUI(Ticket ticket) {
         setTitle("Thông tin đơn hàng");
         setSize(420, 750);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         getContentPane().setBackground(BG_COLOR);
         setLayout(new BorderLayout());
+        this.ticket = ticket;
+        category = ticket.getSeatNumber();
+        price = ticket.getPrice();
+        priceInt = (int) price;  
+
+        
 
         // 1. HEADER
         add(createHeader(), BorderLayout.NORTH);
@@ -50,7 +66,7 @@ public class OrderScreenUI extends JFrame {
         contentPanel.add(createPaymentDetailsPanel());
 
         contentPanel.add(Box.createVerticalStrut(20));
-        contentPanel.add(createSectionTitle("Thông tin Vé 1 ngày"));
+        contentPanel.add(createSectionTitle("Thông tin "+category));
         contentPanel.add(Box.createVerticalStrut(5));
         contentPanel.add(createTicketInfoPanel());
 
@@ -67,6 +83,8 @@ public class OrderScreenUI extends JFrame {
 
         // 3. FOOTER
         add(createFooter(), BorderLayout.SOUTH);
+        setVisible(true);
+
     }
 
     // --- HÀM TẢI ICON TỪ WEB ---
@@ -95,6 +113,24 @@ public class OrderScreenUI extends JFrame {
         // Thay Text bằng Icon Web
         JLabel lblBack = new JLabel();
         lblBack.setIcon(loadIconFromWeb(ICON_BACK_URL, 24, 24));
+        
+        lblBack.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+             
+                Window current = SwingUtilities.getWindowAncestor(lblBack);
+                if (current != null) current.dispose();
+
+               
+                new BuyTicketUI();
+            }
+
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent e) {
+                lblBack.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            }
+        });
+
         
         JLabel lblTitle = new JLabel("Thông tin đơn hàng", SwingConstants.CENTER);
         lblTitle.setFont(FONT_HEADER);
@@ -149,10 +185,10 @@ public class OrderScreenUI extends JFrame {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(5, 0, 5, 0);
 
-        addDetailRow(panel, gbc, 0, "Sản phẩm:", "Vé 1 ngày", false);
-        addDetailRow(panel, gbc, 1, "Đơn giá:", "40.000đ", false);
+        addDetailRow(panel, gbc, 0, "Sản phẩm:", category, false);
+        addDetailRow(panel, gbc, 1, "Đơn giá:", priceInt+"đ", false);
         addDetailRow(panel, gbc, 2, "Số lượng:", "1", false);
-        addDetailRow(panel, gbc, 3, "Thành tiền:", "40.000đ", true);
+        addDetailRow(panel, gbc, 3, "Thành tiền:",priceInt+"đ", true);
 
         JSeparator sep = new JSeparator();
         sep.setForeground(Color.LIGHT_GRAY);
@@ -160,8 +196,8 @@ public class OrderScreenUI extends JFrame {
         panel.add(sep, gbc);
 
         gbc.gridwidth = 1;
-        addDetailRow(panel, gbc, 5, "Tổng giá tiền:", "40.000đ", false);
-        addDetailRow(panel, gbc, 6, "Thành tiền:", "40.000đ", true);
+        addDetailRow(panel, gbc, 5, "Tổng giá tiền:", priceInt+"đ", false);
+        addDetailRow(panel, gbc, 6, "Thành tiền:", priceInt+"đ", true);
 
         return panel;
     }
@@ -174,7 +210,7 @@ public class OrderScreenUI extends JFrame {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(8, 0, 8, 0);
 
-        addDetailRow(panel, gbc, 0, "Loại vé:", "Vé 1 ngày", false);
+        addDetailRow(panel, gbc, 0, "Loại vé:", category, false);
         addDetailRow(panel, gbc, 1, "HSD:", "24h kể từ thời điểm kích hoạt", false);
 
         gbc.gridy = 2; gbc.gridx = 0; gbc.weightx = 0.3; gbc.anchor = GridBagConstraints.NORTHWEST;
@@ -224,12 +260,31 @@ public class OrderScreenUI extends JFrame {
 
         JPanel btnContainer = new RoundedPanel(25, BTN_COLOR);
         btnContainer.setLayout(new BorderLayout());
-        JLabel lblBtnText = new JLabel("Thanh toán: 40.000đ", SwingConstants.CENTER);
+        double price = ticket.getPrice();
+        String formatted = formatMoney(price);
+
+        JLabel lblBtnText = new JLabel("Thanh toán: " + formatted, SwingConstants.CENTER);
         lblBtnText.setForeground(Color.WHITE);
         lblBtnText.setFont(new Font("Segoe UI", Font.BOLD, 16));
         btnContainer.add(lblBtnText, BorderLayout.CENTER);
         btnContainer.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
         btnContainer.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        
+        btnContainer.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+                double price = ticket.getPrice(); // Lấy giá từ ticket
+                String formatted = formatMoney(price);  // Định dạng tiền tệ
+
+                JOptionPane.showMessageDialog(null,
+                        "Bạn đã thanh toán số tiền: " + formatted,
+                        "Thanh toán",
+                        JOptionPane.INFORMATION_MESSAGE
+                );
+            }
+        });
+
 
         footer.add(lblTerm);
         footer.add(Box.createVerticalStrut(10));
@@ -237,9 +292,14 @@ public class OrderScreenUI extends JFrame {
 
         return footer;
     }
+    public String formatMoney(double amount) {
+        DecimalFormat df = new DecimalFormat("#,###");
+        return df.format(amount) + "đ";
+    }
+
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new OrderScreenUI().setVisible(true));
+        SwingUtilities.invokeLater(() -> new OrderScreenUI(new Ticket()).setVisible(true));
     }
 
     // Class hỗ trợ vẽ bo tròn
