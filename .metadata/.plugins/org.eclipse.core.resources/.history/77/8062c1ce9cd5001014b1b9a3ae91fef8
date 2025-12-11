@@ -41,8 +41,7 @@ public class RedeemTicketUI extends JFrame {
         contentPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
 
         // -- Hình ảnh minh họa --
-        JLabel lblIcon = new JLabel(loadIcon("/img/"
-        		+ ".png", 100, 100)); // Icon hộp quà
+        JLabel lblIcon = new JLabel(loadIcon("/img/account.png", 100, 100)); // Icon hộp quà
         lblIcon.setAlignmentX(Component.CENTER_ALIGNMENT);
         contentPanel.add(lblIcon);
         contentPanel.add(Box.createVerticalStrut(20));

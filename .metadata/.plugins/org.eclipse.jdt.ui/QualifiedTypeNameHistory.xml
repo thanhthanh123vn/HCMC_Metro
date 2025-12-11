@@ -2,5 +2,9 @@
 <qualifiedTypeNameHistroy>
     <fullyQualifiedTypeName name="java.lang.Double"/>
     <fullyQualifiedTypeName name="view.TicketPanel"/>
+    <fullyQualifiedTypeName name="view.OrderScreenUI"/>
     <fullyQualifiedTypeName name="data.Ticket"/>
+    <fullyQualifiedTypeName name="data.FareCalculator"/>
+    <fullyQualifiedTypeName name="java.util.Date"/>
+    <fullyQualifiedTypeName name="data.CustomerManager"/>
 </qualifiedTypeNameHistroy>

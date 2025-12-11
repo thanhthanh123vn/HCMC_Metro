@@ -169,7 +169,7 @@ public class BuyTicketUI extends JFrame {
         JLabel avatar = new JLabel(loadIcon("/img/user-male-circle.png", 50, 50)); 
 
         JLabel text = new JLabel("<html><div style='width: 200px;'>"
-                + "<span style='font-size:11px; color:#212568; font-weight:bold;'>Chào mừng bạn !</span><br/>"
+                + "<span style='font-size:11px; color:#212568; font-weight:bold;'>Chào mừng bạn!</span><br/>"
                 + "<span style='font-size:10px; color:#555555;'>Bắt đầu các trải nghiệm mới cùng Metro nhé!</span>"
                 + "</div></html>");
 
