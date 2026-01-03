@@ -37,6 +37,14 @@ public class Order {
     public List<Ticket> getTickets() {
         return tickets;
     }
-
-  
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
+	public void setTickets(List<Ticket> tickets) {
+		this.tickets = tickets;
+	}
+	
 }

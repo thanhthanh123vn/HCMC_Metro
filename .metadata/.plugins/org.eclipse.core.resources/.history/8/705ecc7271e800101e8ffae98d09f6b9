@@ -1,0 +1,34 @@
+package data;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class BusRoute {
+    private String routeId;    
+    private String routeName; 
+    private List<BusStation> busStations;
+
+    public BusRoute(String id, String name) {
+        this.routeId = id;
+        this.routeName = name;
+        this.busStations = new ArrayList<>();
+    }
+
+    public void addStation(BusStation station) {
+        this.busStations.add(station);
+    }
+
+  
+    public boolean passesNearMetroStation(String metroStationName) {
+        for (BusStation bs : busStations) {
+            if (bs.getName().contains(metroStationName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Getters...
+    public List<BusStation> getBusStations() { return busStations; }
+    public String getRouteName() { return routeName; }
+}

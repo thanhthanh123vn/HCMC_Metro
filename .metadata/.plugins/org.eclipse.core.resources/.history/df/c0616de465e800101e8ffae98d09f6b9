@@ -1,0 +1,36 @@
+package data;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Route {
+    private String routeId;
+    private String routeName;
+    private List<Station> listStations;
+    private double totalDistance;
+
+    public Route(String routeId, String routeName) {
+        this.routeId = routeId;
+        this.routeName = routeName;
+        this.listStations = new ArrayList<>();
+    }
+
+    // Methods thao tác với danh sách ga
+    public void addStation(Station station) {
+        if (station != null && !listStations.contains(station)) {
+            listStations.add(station);
+        }
+    }
+
+    public void removeStation(Station station) {
+        listStations.remove(station);
+    }
+
+    public List<Station> getStations() {
+        return listStations;
+    }
+
+    public double getDistance() {
+        return totalDistance;
+    }
+}

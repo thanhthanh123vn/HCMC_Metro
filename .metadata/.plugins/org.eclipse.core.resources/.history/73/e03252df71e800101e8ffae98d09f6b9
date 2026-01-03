@@ -1,0 +1,11 @@
+package data;
+
+import java.util.ArrayList;
+import java.util.List;
+
+// Trạm xe buýt kế thừa từ Station để đồng bộ dữ liệu
+public class BusStation extends Station {
+    public BusStation(String id, String name) {
+        super(id, name);
+    }
+}

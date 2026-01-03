@@ -99,7 +99,7 @@ public class AccountUI extends JFrame {
         p.setBackground(BG_COLOR);
         p.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        // Avatar giả lập (Hình tròn)
+    
         JLabel lblAvatar = new JLabel("<html><div style='background-color:#DDEEFF; border-radius:50%; width:80px; height:80px; text-align:center; vertical-align:middle; line-height:80px; font-size:30px; color:#0055AA;'>" 
                 + user.getName().charAt(0) + "</div></html>");
         lblAvatar.setAlignmentX(Component.CENTER_ALIGNMENT);

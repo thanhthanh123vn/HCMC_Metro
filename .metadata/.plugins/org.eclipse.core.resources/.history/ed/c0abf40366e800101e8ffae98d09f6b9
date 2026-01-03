@@ -1,0 +1,38 @@
+package data;
+
+import java.util.Date;
+
+public class Booking {
+    private String bookingId;
+    private Customer customer;
+    private Trip trip;
+    private Ticket ticket;
+    private Date bookingDate;
+    private String status; // "Pending", "Confirmed", "Cancelled"
+
+    public Booking(String bookingId, Customer customer, Trip trip) {
+        this.bookingId = bookingId;
+        this.customer = customer;
+        this.trip = trip;
+        this.bookingDate = new Date();
+        this.status = "Pending";
+    }
+
+    // Business Methods
+    public void confirmBooking() {
+        if (this.ticket != null) {
+            this.status = "Confirmed";
+            // Gửi email hoặc thông báo
+        }
+    }
+
+    public void cancelBooking() {
+        this.status = "Cancelled";
+    }
+
+    public void setTicket(Ticket ticket) {
+        this.ticket = ticket;
+    }
+    
+    public String getStatus() { return status; }
+}

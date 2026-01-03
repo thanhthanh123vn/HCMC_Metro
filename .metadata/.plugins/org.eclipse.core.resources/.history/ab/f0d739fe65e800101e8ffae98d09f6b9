@@ -1,0 +1,77 @@
+package data;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.LinkedList;
+
+// Lớp Đầu máy
+class Locomotive {
+    private String id;
+    private boolean status;
+    private double speed;
+    private Integer year; // Dùng Integer object theo diagram
+}
+
+// Lớp Toa tàu (Cập nhật thuộc tính theo diagram)
+class Carriage {
+    private String id;
+    private boolean status;
+    private double speed;
+    private Integer year;
+}
+
+// Lớp Tàu (Train)
+class Train {
+    private String name;
+    private boolean status;
+    private Locomotive locomotive;
+    private LinkedList<Carriage> carriageList;
+
+    public void setStatus() {
+        // Logic set status (Diagram không có tham số, có thể là toggle hoặc set default)
+    }
+
+    public int getSeatQuantity() {
+        return 0; // Logic tính tổng số ghế
+    }
+}
+
+// Lớp Chi tiết lịch trình
+class ScheduleDetail {
+    private String date;
+    private double timeStart;
+    private double timeEnd;
+    private Train train;
+    private Route route;
+}
+
+// Lớp Lịch chạy hàng ngày
+class ScheduleDaily {
+    private String date;
+    private ArrayList<ScheduleDetail> listOfSchedule;
+}
+
+// Lớp Chuyến đi (Trip)
+class Trip {
+    private String id;
+    private ScheduleDaily scheduleDaily;
+    private Train train;
+    private Route route;
+    private LocalDate departureDate;
+    private LocalDateTime actualDepartureTime;
+    private LocalDateTime actualArrivalTime;
+    private String status;
+
+    public double calculateFare(Station from, Station to) {
+        return 0.0;
+    }
+
+    public void setPeakMode(boolean peak) {
+        // Logic set giá cao điểm
+    }
+
+    public void Operation2() {
+        // Hàm chưa đặt tên cụ thể trong diagram
+    }
+}

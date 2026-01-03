@@ -1,0 +1,16 @@
+package data;
+
+// Mở rộng từ Station hiện có trong Station.java
+public class BusStation extends Station {
+    private double latitude;
+    private double longitude;
+
+    public BusStation(String id, String name, double lat, double lon) {
+        super(id, name);
+        this.latitude = lat;
+        this.longitude = lon;
+    }
+
+    public double getLatitude() { return latitude; }
+    public double getLongitude() { return longitude; }
+}

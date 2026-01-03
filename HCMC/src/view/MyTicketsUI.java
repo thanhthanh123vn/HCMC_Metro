@@ -1,25 +1,30 @@
 package view;
 
+import data.Customer;
 import data.Order;
 import data.OrderManager;
+import data.SessionManager;
 import data.Ticket;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
+
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MyTicketsUI extends JFrame {
 
     private static final Color BG_COLOR = new Color(242, 248, 255);
     private static final Color PRIMARY_COLOR = new Color(0, 90, 170);
-    
+     
     public MyTicketsUI() {
         setTitle("Vé của tôi");
         setSize(400, 750);
@@ -28,6 +33,7 @@ public class MyTicketsUI extends JFrame {
         setResizable(false);
         getContentPane().setBackground(BG_COLOR);
         setLayout(new BorderLayout());
+//        loadTicketHistory();
 
         // 1. HEADER
         add(createHeader(), BorderLayout.NORTH);
@@ -39,24 +45,38 @@ public class MyTicketsUI extends JFrame {
         listPanel.setBorder(new EmptyBorder(10, 15, 10, 15));
 
         // Lấy dữ liệu từ OrderManager
+        Customer currentUser = data.SessionManager.getCurrentUser();
         List<Order> history = OrderManager.getInstance().getOrderHistory();
+        boolean hasTicket = false; 
 
-        if (history.isEmpty()) {
+        if (currentUser != null && !history.isEmpty()) {
+     
+            for (int i = history.size() - 1; i >= 0; i--) {
+                Order order = history.get(i);
+
+          
+                if (order.getCustomer() != null && 
+                    order.getCustomer().getName().equals(currentUser.getName())) {
+                    
+                    hasTicket = true; // Đánh dấu là có vé
+                    
+                    for (Ticket t : order.getTickets()) {
+                        listPanel.add(createTicketItem(t, order));
+                        listPanel.add(Box.createVerticalStrut(15));
+                    }
+                }
+            }
+        }
+
+        // 3. Nếu không có vé nào (hoặc chưa đăng nhập), hiện thông báo
+        if (!hasTicket) {
             JLabel lblEmpty = new JLabel("Bạn chưa mua vé nào.", SwingConstants.CENTER);
             lblEmpty.setFont(new Font("Segoe UI", Font.ITALIC, 14));
             lblEmpty.setForeground(Color.GRAY);
             lblEmpty.setAlignmentX(Component.CENTER_ALIGNMENT);
+            
             listPanel.add(Box.createVerticalStrut(50));
             listPanel.add(lblEmpty);
-        } else {
-            // Duyệt ngược để hiện vé mới nhất lên đầu
-            for (int i = history.size() - 1; i >= 0; i--) {
-                Order order = history.get(i);
-                for (Ticket t : order.getTickets()) {
-                    listPanel.add(createTicketItem(t, order));
-                    listPanel.add(Box.createVerticalStrut(15)); // Khoảng cách giữa các vé
-                }
-            }
         }
 
         JScrollPane scrollPane = new JScrollPane(listPanel);
@@ -97,6 +117,38 @@ public class MyTicketsUI extends JFrame {
         
         return header;
     }
+
+//    private void loadTicketHistory() {
+//  
+//      
+//		DefaultTableModel model = (DefaultTableModel) table.getModel();
+//        model.setRowCount(0); 
+//  
+//        Customer currentUser = SessionManager.getCurrentUser();
+//        if (currentUser == null) return; 
+//
+//        List<Order> allOrders = OrderManager.getInstance().getOrderHistory();
+//        
+//        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+//
+//        for (Order order : allOrders) {
+//      
+//            if (order.getCustomer() != null && 
+//                order.getCustomer().getName().equals(currentUser.getName())) {
+//                
+//            
+//                for (Ticket t : order.getTickets()) {
+//                    model.addRow(new Object[]{
+//                        order.getId(),          
+//                        "Vé Metro",              
+//                        dateFormat.format(order.getOrderDate()),
+//                        String.format("%,.0f VND", t.getPrice()) 
+//                    });
+//                }
+//            }
+//        }
+//    }
+
     private ImageIcon loadIcon(String path, int width, int height) {
         try {
             // Sử dụng getResource để lấy file từ classpath (thư mục src/img)

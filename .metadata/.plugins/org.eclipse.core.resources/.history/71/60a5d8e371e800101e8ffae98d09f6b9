@@ -1,0 +1,11 @@
+package data;
+
+import java.util.ArrayList;
+import java.util.List;
+
+
+public class BusStation extends Station {
+    public BusStation(String id, String name) {
+        super(id, name);
+    }
+}

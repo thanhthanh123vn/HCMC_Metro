@@ -1,5 +1,6 @@
 package data; // Hoặc package logic
 
+import java.util.Calendar;
 import java.util.Hashtable;
 
 public class FareCalculator {
@@ -17,6 +18,32 @@ public class FareCalculator {
     public double calculateFare(double distanceKm) {
         int zone = getZoneFromDistance(distanceKm);
         return priceTable.getOrDefault(zone, 10000.0);
+    }
+    public static long calculateFare(String ticketType, int birthYear) {
+        long basePrice = 0;
+        
+        // Define Base Prices
+        switch (ticketType) {
+            case "Standard Ticket": basePrice = 20000; break; 
+            case "Day Pass":        basePrice = 40000; break; 
+            case "Monthly Pass":    basePrice = 200000; break; 
+            default:                basePrice = 20000;
+        }
+
+        // --- NEW CODE: DISCOUNT LOGIC START ---
+        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+        int age = currentYear - birthYear;
+
+        if (age < 6) {
+            return 0; // Free for children under 6
+        } else if (age < 18) {
+            return (long) (basePrice * 0.7); // 30% off for students/youth
+        } else if (age >= 60) {
+            return (long) (basePrice * 0.5); // 50% off for seniors
+        }
+
+
+        return basePrice;
     }
 
     private int getZoneFromDistance(double km) {

@@ -1,0 +1,62 @@
+package data;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Station {
+    private String stationId;
+    private String stationName;
+    private String address;
+    private boolean isActive;
+
+    public Station(String stationId, String stationName, String address) {
+        this.stationId = stationId;
+        this.stationName = stationName;
+        this.address = address;
+        this.isActive = true;
+    }
+
+    // Standard Getters and Setters
+    public String getStationId() { return stationId; }
+    public void setStationId(String stationId) { this.stationId = stationId; }
+
+    public String getStationName() { return stationName; }
+    public void setStationName(String stationName) { this.stationName = stationName; }
+
+    public String getAddress() { return address; }
+    public void setAddress(String address) { this.address = address; }
+
+    // Business Methods (Dự đoán từ lược đồ)
+    public boolean checkStatus() {
+        return this.isActive;
+    }
+
+    @Override
+    public String toString() {
+        return this.stationName;
+    }
+}
+// Lớp Đoạn đường (RoutePart)
+class RoutePart {
+    private Station beginStation;
+    private Station endStation;
+    private double distanceKm;
+
+    public RoutePart(Station begin, Station end, double distance) {
+        this.beginStation = begin;
+        this.endStation = end;
+        this.distanceKm = distance;
+    }
+ 
+
+    
+    public Station getBeginStation() {
+        return this.beginStation;
+    }
+
+    public Station getEndStation() {
+        return this.endStation;
+    }
+}
+
+// 

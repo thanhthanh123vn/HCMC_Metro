@@ -1,0 +1,13 @@
+package data;
+
+//Trong data/Station.java hoặc file mới
+public class BusStation extends Station {
+ private double lat, lon; // Tọa độ để tìm trạm gần nhất
+
+ public BusStation(String id, String name, double lat, double lon) {
+     super(id, name);
+     this.lat = lat;
+     this.lon = lon;
+ }
+ // Getters...
+}

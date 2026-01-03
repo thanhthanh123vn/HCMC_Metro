@@ -1,0 +1,83 @@
+package data;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class IntegratedRouteService {
+    private List<BusRoute> allBusRoutes;
+    private MetroService metroService;
+
+    public IntegratedRouteService(MetroService metroService) {
+        this.metroService = metroService;
+        this.allBusRoutes = new ArrayList<>();
+        simulateBusData();
+    }
+
+    // Giả lập dữ liệu xe buýt thực tế tại TP.HCM kết nối với Metro Line 1
+    private void simulateBusData() {
+        // Tuyến 150: Chợ Lớn - Ngã 3 Tân Vạn (đi ngang qua Suối Tiên)
+        BusRoute route150 = new BusRoute("150");
+        route150.addStop(new BusStation("BS01", "Chợ Thủ Đức"));
+        route150.addStop(new BusStation("BS02", "Ngã tư Bình Thái")); // Điểm kết nối Metro
+        route150.addStop(new BusStation("BS03", "Suối Tiên")); // Điểm kết nối Metro
+        allBusRoutes.add(route150);
+
+        // Tuyến 56: Chợ Lớn - Đại học Giao thông Vận tải
+        BusRoute route56 = new BusRoute("56");
+        route56.addStop(new BusStation("BS04", "Ngã tư Hàng Xanh"));
+        route56.addStop(new BusStation("BS05", "Tân Cảng")); // Điểm kết nối Metro
+        allBusRoutes.add(route56);
+    }
+
+    /**
+     * Logic gợi ý: Tìm bus từ điểm xuất phát đến trạm Metro gần nhất, 
+     * sau đó tính tiếp chặng Metro.
+     */
+    public String suggestIntegratedRoute(String currentPos, String destinationMetroName) {
+        StringBuilder suggestion = new StringBuilder("--- GỢI Ý LỘ TRÌNH KẾT HỢP ---\n");
+        
+        // 1. Tìm tuyến bus đi qua vị trí hiện tại
+        for (BusRoute route : allBusRoutes) {
+            for (BusStation stop : route.getStops()) {
+                if (stop.getName().equalsIgnoreCase(currentPos)) {
+                    
+                    // 2. Tìm trạm trung chuyển (Trạm bus trùng tên/gần trạm Metro)
+                    for (BusStation transferStop : route.getStops()) {
+                        for (Station metroStation : metroService.getStations()) {
+                            if (transferStop.getName().contains(metroStation.getName())) {
+                                
+                                suggestion.append("Bước 1: Tại [").append(currentPos).append("], ");
+                                suggestion.append("bắt xe Buýt số ").append(route.getRouteNumber());
+                                suggestion.append(" đến trạm Metro [").append(metroStation.getName()).append("].\n");
+                                
+                                suggestion.append("Bước 2: Từ trạm [").append(metroStation.getName()).append("], ");
+                                suggestion.append("đi tàu Metro Line 1 đến [").append(destinationMetroName).append("].\n");
+                                
+                                // Sử dụng calculateDistance của MetroService để tính quãng đường tàu chạy
+                                suggestion.append(">>> Tổng chặng Metro: khoảng ")
+                                          .append(String.format("%.2f", calculateMetroSegment(metroStation.getName(), destinationMetroName)))
+                                          .append(" km.");
+                                
+                                return suggestion.toString();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return "Xin lỗi, không tìm thấy tuyến Bus kết hợp phù hợp từ vị trí này.";
+    }
+
+    private double calculateMetroSegment(String startName, String endName) {
+        int startIdx = -1, endIdx = -1;
+        List<Station> stations = metroService.getStations();
+        for (int i = 0; i < stations.size(); i++) {
+            if (stations.get(i).getName().equals(startName)) startIdx = i;
+            if (stations.get(i).getName().equals(endName)) endIdx = i;
+        }
+        if (startIdx != -1 && endIdx != -1) {
+            return metroService.calculateDistance(startIdx, endIdx); // Gọi hàm từ MetroService
+        }
+        return 0;
+    }
+}

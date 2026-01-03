@@ -92,7 +92,7 @@ public class RegisterUI extends JFrame {
         btnRegister.addActionListener(e -> {
             JOptionPane.showMessageDialog(this, "Đăng ký thành công! Vui lòng đăng nhập.");
             CustomerManager customerManager = new CustomerManager();
-            customerManager.register(getName(), getWarningString(), getName());
+            customerManager.register(txtName.getText(), txtName.getText(), txtPass.getText());
 
             new LoginUI().setVisible(true);
             dispose();
@@ -134,6 +134,7 @@ public class RegisterUI extends JFrame {
         txt.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         return txt;
     }
+    
     
     private JPasswordField createPasswordField(int x, int y) {
         JPasswordField txt = new JPasswordField();

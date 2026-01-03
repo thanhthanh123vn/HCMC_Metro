@@ -1,0 +1,26 @@
+package data;
+
+import java.util.ArrayList;
+import java.util.List;
+
+// Trạm xe buýt kế thừa từ Station để đồng bộ dữ liệu
+public class BusStation extends Station {
+    public BusStation(String id, String name) {
+        super(id, name);
+    }
+}
+
+// Tuyến xe buýt
+class BusRoute {
+    private String routeNumber; // Số hiệu tuyến (ví dụ: "150")
+    private List<BusStation> stops;
+
+    public BusRoute(String number) {
+        this.routeNumber = number;
+        this.stops = new ArrayList<>();
+    }
+
+    public void addStop(BusStation stop) { stops.add(stop); }
+    public String getRouteNumber() { return routeNumber; }
+    public List<BusStation> getStops() { return stops; }
+}

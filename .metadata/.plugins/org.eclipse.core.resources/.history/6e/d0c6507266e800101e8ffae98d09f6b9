@@ -1,0 +1,45 @@
+package data;
+
+import java.util.Date;
+
+public class Ticket {
+    private String ticketId;
+    private double price;
+    private String type; // Ví dụ: "Single", "DayPass", "MonthPass"
+    private Date issueDate;
+    private Date expiryDate;
+    private boolean isUsed;
+
+    public Ticket(String ticketId, double price, String type) {
+        this.ticketId = ticketId;
+        this.price = price;
+        this.type = type;
+        this.issueDate = new Date(); // Lấy thời gian hiện tại
+        this.isUsed = false;
+        // Logic tính ngày hết hạn dựa trên loại vé
+        calculateExpiryDate();
+    }
+
+    private void calculateExpiryDate() {
+        // Giả sử logic đơn giản
+        if (this.type.equalsIgnoreCase("DayPass")) {
+            // Set expiry to end of day
+        } else if (this.type.equalsIgnoreCase("MonthPass")) {
+            // Set expiry to 30 days later
+        }
+    }
+
+    // Business Methods
+    public boolean isValid() {
+        Date now = new Date();
+        return !isUsed && (expiryDate == null || now.before(expiryDate));
+    }
+
+    public void markAsUsed() {
+        this.isUsed = true;
+    }
+
+    // Getters
+    public double getPrice() { return price; }
+    public String getType() { return type; }
+}

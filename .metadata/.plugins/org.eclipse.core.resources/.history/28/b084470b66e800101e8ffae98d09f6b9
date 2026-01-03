@@ -1,0 +1,27 @@
+package data;
+
+import java.util.Date;
+import java.util.List;
+
+public class Order {
+    private String id;
+    private Date orderDate;
+    private Customer customer;
+    private List<Ticket> ticket; // Diagram dùng tên biến 'ticket' (số ít) list
+
+    public double calculateTotalPrice() {
+        return 0.0;
+    }
+
+    public void assignTicket(Ticket ticket) {
+        // Logic gán vé vào đơn hàng
+    }
+
+    public void assignCustomer(Customer customer) {
+        // Logic gán khách hàng
+    }
+
+    public String getOrderInfo() {
+        return "";
+    }
+}

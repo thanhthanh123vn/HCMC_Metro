@@ -1,0 +1,39 @@
+package data;
+
+import java.time.LocalDateTime;
+
+public class Booking {
+    private String id;
+    private Customer customer;
+    private Station fromStation;
+    private Station toStation;
+    private Trip trip;
+    private LocalDateTime bookingTime;
+    private String status;
+    private LocalDateTime expirationTime;
+    private double estimatePrice;
+
+    // Giả sử class Seat đã được định nghĩa ở đâu đó
+    // Nếu chưa có, bạn cần tạo class Seat hoặc đổi thành String/Object
+    public void addSeat(Object seat) { 
+        // Logic giữ chỗ
+    }
+
+    public void removeSeat(String seatId) {
+        // Logic hủy chỗ
+    }
+
+    public boolean isExpired() {
+        // Logic kiểm tra hết hạn
+        return false;
+    }
+
+    public void cancel() {
+        // Logic hủy booking
+    }
+
+    public Order confirm() {
+        // Logic xác nhận booking và tạo Order
+        return new Order();
+    }
+}

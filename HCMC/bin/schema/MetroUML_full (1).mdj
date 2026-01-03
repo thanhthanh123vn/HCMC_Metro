@@ -1,0 +1,313 @@
+{
+  "version": "2.0",
+  "created": "2026-01-03T05:48:55.775764",
+  "modified": "2026-01-03T05:48:55.775770",
+  "project": {
+    "_type": "Project",
+    "_id": "5fc68d2b-1b52-46ee-9c75-ec6848174d8b",
+    "name": "MetroUML",
+    "ownedElements": [
+      {
+        "_type": "UMLModel",
+        "_id": "6840af2b-b8d9-4e6e-b0bb-013ea0da8817",
+        "name": "Model",
+        "ownedElements": [
+          {
+            "_type": "UMLClass",
+            "_id": "aefe599f-c88f-4a0b-8b67-c6dbdd0c9f94",
+            "name": "Customer",
+            "ownedElements": [
+              {
+                "_type": "UMLAttribute",
+                "_id": "27c82299-59eb-4841-a7b9-18d5d31105ed",
+                "name": "id",
+                "type": "String"
+              },
+              {
+                "_type": "UMLAttribute",
+                "_id": "5f8f5d3c-08a3-4434-8deb-fcc5110fbf31",
+                "name": "name",
+                "type": "String"
+              },
+              {
+                "_type": "UMLAttribute",
+                "_id": "2c202aa4-5208-48d7-a998-ecf62eda2a4a",
+                "name": "email",
+                "type": "String"
+              },
+              {
+                "_type": "UMLAttribute",
+                "_id": "5b421c06-43ed-4999-a189-b15c6a97ba49",
+                "name": "password",
+                "type": "String"
+              },
+              {
+                "_type": "UMLAttribute",
+                "_id": "c6c99d0f-fe4e-4419-a4a8-ccab7e85919c",
+                "name": "phone",
+                "type": "String"
+              },
+              {
+                "_type": "UMLOperation",
+                "_id": "0d680840-f88f-4475-8d69-efa073c17898",
+                "name": "updateContactInfo",
+                "parameters": [
+                  {
+                    "name": "email",
+                    "type": "String"
+                  },
+                  {
+                    "name": "phone",
+                    "type": "String"
+                  }
+                ],
+                "returnType": "void"
+              }
+            ]
+          },
+          {
+            "_type": "UMLClass",
+            "_id": "4756d9d2-53fd-4c04-9d44-41f2925d1c6e",
+            "name": "Order",
+            "ownedElements": [
+              {
+                "_type": "UMLAttribute",
+                "_id": "a45e45d0-1fdb-4314-9204-1b8603ba39d4",
+                "name": "id",
+                "type": "String"
+              },
+              {
+                "_type": "UMLAttribute",
+                "_id": "be6950b1-c806-471a-8dc7-e927a847503f",
+                "name": "orderDate",
+                "type": "Date"
+              },
+              {
+                "_type": "UMLOperation",
+                "_id": "61ee5dd4-b402-4769-a789-77305d1ed8db",
+                "name": "calculateTotalPrice",
+                "parameters": [],
+                "returnType": "double"
+              },
+              {
+                "_type": "UMLOperation",
+                "_id": "4a9d248e-cba2-4d3a-818b-dc44bc59e27c",
+                "name": "assignTicket",
+                "parameters": [
+                  {
+                    "name": "ticket",
+                    "type": "Ticket"
+                  }
+                ],
+                "returnType": "void"
+              }
+            ]
+          },
+          {
+            "_type": "UMLClass",
+            "_id": "b8081fc2-f462-4da9-b51d-587728425823",
+            "name": "Ticket",
+            "ownedElements": [
+              {
+                "_type": "UMLAttribute",
+                "_id": "4caedc42-9474-4d8a-bade-a5889e088cd7",
+                "name": "id",
+                "type": "String"
+              },
+              {
+                "_type": "UMLAttribute",
+                "_id": "6d330be9-e603-4d81-b1c2-535d077ffb6b",
+                "name": "seatNumber",
+                "type": "String"
+              },
+              {
+                "_type": "UMLAttribute",
+                "_id": "d1423b98-5e1f-49ce-8acd-20f989f257d1",
+                "name": "price",
+                "type": "double"
+              },
+              {
+                "_type": "UMLOperation",
+                "_id": "ec90bd9d-7960-4407-8964-98774cf00379",
+                "name": "getInfo",
+                "parameters": [],
+                "returnType": "String"
+              }
+            ]
+          },
+          {
+            "_type": "UMLClass",
+            "_id": "d87922f5-58a8-4568-b60b-39f784dd0de2",
+            "name": "Booking",
+            "ownedElements": [
+              {
+                "_type": "UMLAttribute",
+                "_id": "9b6a0e57-7611-4df6-ab5e-d09d105c7eb3",
+                "name": "id",
+                "type": "String"
+              },
+              {
+                "_type": "UMLAttribute",
+                "_id": "e981eec9-faec-45d9-995a-74d87060fa79",
+                "name": "bookingTime",
+                "type": "LocalDateTime"
+              },
+              {
+                "_type": "UMLAttribute",
+                "_id": "620c3845-9119-499d-b8b3-878b877b319a",
+                "name": "estimatePrice",
+                "type": "double"
+              },
+              {
+                "_type": "UMLOperation",
+                "_id": "bf43f137-c222-4766-bb96-b8020b86a90a",
+                "name": "confirm",
+                "parameters": [],
+                "returnType": "Order"
+              },
+              {
+                "_type": "UMLOperation",
+                "_id": "b5138b0f-9eea-4e2c-af4f-5a0ff0fad533",
+                "name": "addSeat",
+                "parameters": [
+                  {
+                    "name": "seat",
+                    "type": "String"
+                  }
+                ],
+                "returnType": "void"
+              }
+            ]
+          },
+          {
+            "_type": "UMLClass",
+            "_id": "46499d2e-f1bf-4513-9a3c-4302912860e3",
+            "name": "Station",
+            "ownedElements": [
+              {
+                "_type": "UMLAttribute",
+                "_id": "4989b176-8530-4ce0-8d7b-9183a6aba9a9",
+                "name": "id",
+                "type": "String"
+              },
+              {
+                "_type": "UMLAttribute",
+                "_id": "87ec9615-760f-42eb-bb06-e5dfd19852d0",
+                "name": "name",
+                "type": "String"
+              }
+            ]
+          },
+          {
+            "_type": "UMLClass",
+            "_id": "9ec44d6b-af53-49a3-940c-7d76ab4be8a5",
+            "name": "Route",
+            "ownedElements": [
+              {
+                "_type": "UMLAttribute",
+                "_id": "0e034059-4563-421d-804e-1eff5dc6b607",
+                "name": "id",
+                "type": "String"
+              },
+              {
+                "_type": "UMLAttribute",
+                "_id": "ff9c5d6a-0b68-4eff-b49e-53611b6cd634",
+                "name": "name",
+                "type": "String"
+              }
+            ]
+          },
+          {
+            "_type": "UMLClass",
+            "_id": "476bd6b4-0bcb-444e-afd5-065d94040a85",
+            "name": "Train",
+            "ownedElements": [
+              {
+                "_type": "UMLAttribute",
+                "_id": "52c43c70-90a3-4e3a-861b-e7729c371266",
+                "name": "name",
+                "type": "String"
+              },
+              {
+                "_type": "UMLAttribute",
+                "_id": "814ace41-54c6-4464-9505-9310c15a8121",
+                "name": "status",
+                "type": "boolean"
+              },
+              {
+                "_type": "UMLOperation",
+                "_id": "9d0c9c2a-3edb-4c7d-9988-08f5ddd9d40c",
+                "name": "getSeatQuantity",
+                "parameters": [],
+                "returnType": "int"
+              }
+            ]
+          },
+          {
+            "_type": "UMLClass",
+            "_id": "6b07a8e2-740f-474b-8dcf-f37c0aa4d553",
+            "name": "Payment",
+            "ownedElements": [
+              {
+                "_type": "UMLAttribute",
+                "_id": "90299410-c440-4f6a-9183-c8aa1f0747cb",
+                "name": "amount",
+                "type": "double"
+              },
+              {
+                "_type": "UMLAttribute",
+                "_id": "5ec83f9a-4a2b-4e7c-b7c0-f091ff0c980f",
+                "name": "paymentMethod",
+                "type": "String"
+              },
+              {
+                "_type": "UMLOperation",
+                "_id": "4b0ceee2-28af-43c4-a95c-096a57af7984",
+                "name": "process",
+                "parameters": [],
+                "returnType": "boolean"
+              }
+            ]
+          },
+          {
+            "_type": "UMLAssociation",
+            "_id": "0d9dbc65-1d20-4a8c-8b69-f791e2cb62c2",
+            "end1": {
+              "_type": "UMLAssociationEnd",
+              "_id": "2ecdce99-e10e-4878-9cd0-391f12318bea",
+              "reference": "aefe599f-c88f-4a0b-8b67-c6dbdd0c9f94",
+              "multiplicity": "1"
+            },
+            "end2": {
+              "_type": "UMLAssociationEnd",
+              "_id": "061578f5-ea2c-4abc-91b9-309457740964",
+              "reference": "4756d9d2-53fd-4c04-9d44-41f2925d1c6e",
+              "multiplicity": "*"
+            }
+          },
+          {
+            "_type": "UMLAssociation",
+            "_id": "5f0ebe84-6f39-477e-a2dc-37926b02f064",
+            "end1": {
+              "_type": "UMLAssociationEnd",
+              "_id": "cd7a85a8-b2e4-45ee-ab16-19be6d1b4869",
+              "reference": "4756d9d2-53fd-4c04-9d44-41f2925d1c6e",
+              "multiplicity": "1"
+            },
+            "end2": {
+              "_type": "UMLAssociationEnd",
+              "_id": "1dc80275-7d7c-477a-b735-f0a1a2b59d5b",
+              "reference": "b8081fc2-f462-4da9-b51d-587728425823",
+              "multiplicity": "*"
+            }
+          },
+          {
+            "_type": "UMLClassDiagram",
+            "_id": "8870c96b-7355-4571-81e3-4fd08fbf6f70",
+            "name": "Metro Booking System"
+          }
+        ]
+      }
+    ]
+  }
+}
