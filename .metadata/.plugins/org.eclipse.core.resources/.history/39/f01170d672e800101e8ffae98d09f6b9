@@ -177,14 +177,14 @@ public class MetroAppUI extends JFrame {
         
         if (start == null || start.isEmpty()) return;
 
- 
+        // 2. Chọn trạm Metro đích
         String[] metroStations = metroService.getStationNames(); // Lấy từ MetroService
         String dest = (String) JOptionPane.showInputDialog(this, "Chọn trạm Metro đích:",
                 "Tìm hành trình", JOptionPane.PLAIN_MESSAGE, null, metroStations, metroStations[0]);
 
         if (dest == null) return;
 
-    
+        // 3. Logic giả lập kết nối Bus (Dữ liệu thực tế tại TP.HCM)
         String result = "Không tìm thấy tuyến bus phù hợp.";
         
         // Giả lập Tuyến Bus 150 đi qua Chợ Thủ Đức và trạm Metro Bình Thái

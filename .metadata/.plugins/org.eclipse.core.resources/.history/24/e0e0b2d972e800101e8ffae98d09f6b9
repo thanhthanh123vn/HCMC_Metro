@@ -184,7 +184,7 @@ public class MetroAppUI extends JFrame {
 
         if (dest == null) return;
 
-    
+        // 3. Logic giả lập kết nối Bus (Dữ liệu thực tế tại TP.HCM)
         String result = "Không tìm thấy tuyến bus phù hợp.";
         
         // Giả lập Tuyến Bus 150 đi qua Chợ Thủ Đức và trạm Metro Bình Thái

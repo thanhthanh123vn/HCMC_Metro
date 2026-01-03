@@ -187,7 +187,7 @@ public class MetroAppUI extends JFrame {
     
         String result = "Không tìm thấy tuyến bus phù hợp.";
         
-        // Giả lập Tuyến Bus 150 đi qua Chợ Thủ Đức và trạm Metro Bình Thái
+       
         if (start.toLowerCase().contains("thủ đức")) {
             double km = calculateMetroDistance("Bình Thái", dest);
             result = "--- GỢI Ý HÀNH TRÌNH ---\n" +

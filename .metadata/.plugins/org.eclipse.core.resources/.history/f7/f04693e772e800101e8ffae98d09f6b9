@@ -197,7 +197,7 @@ public class MetroAppUI extends JFrame {
                      "-> Chặng Metro dài: " + String.format("%.2f", km) + " km.\n" +
                      "-> Tổng thời gian ước tính: 45 phút.";
         } 
-        // Giả lập Tuyến Bus 56 đi qua Hàng Xanh và trạm Metro Tân Cảng
+     
         else if (start.toLowerCase().contains("hàng xanh")) {
             double km = calculateMetroDistance("Tân Cảng", dest);
             result = "--- GỢI Ý HÀNH TRÌNH ---\n" +

@@ -168,23 +168,25 @@ public class MetroAppUI extends JFrame {
         layeredPane.add(bannerPanel, JLayeredPane.DEFAULT_LAYER);
     }
 
-  
+    /**
+     * PHẦN MỞ RỘNG (2đ): Giải thuật tìm đường kết hợp Bus & Metro
+     */
     private void showIntegratedRouteDialog() {
-
+        // 1. Nhập điểm xuất phát (Giả lập: Chợ Thủ Đức)
         String start = JOptionPane.showInputDialog(this, 
                 "Nhập địa điểm hiện tại của bạn (Ví dụ: Chợ Thủ Đức, Hàng Xanh):", 
                 "Tìm hành trình kết hợp", JOptionPane.QUESTION_MESSAGE);
         
         if (start == null || start.isEmpty()) return;
 
- 
+        // 2. Chọn trạm Metro đích
         String[] metroStations = metroService.getStationNames(); // Lấy từ MetroService
         String dest = (String) JOptionPane.showInputDialog(this, "Chọn trạm Metro đích:",
                 "Tìm hành trình", JOptionPane.PLAIN_MESSAGE, null, metroStations, metroStations[0]);
 
         if (dest == null) return;
 
-    
+        // 3. Logic giả lập kết nối Bus (Dữ liệu thực tế tại TP.HCM)
         String result = "Không tìm thấy tuyến bus phù hợp.";
         
         // Giả lập Tuyến Bus 150 đi qua Chợ Thủ Đức và trạm Metro Bình Thái
